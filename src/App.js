@@ -1,80 +1,169 @@
 import { useState } from 'react';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 
-import { useAuth0 } from './context/auth-context';
-import Search from './components/search';
-import UnauthenticatedApp from './UnauthenticatedApp';
+import { useQuoteManager } from './hooks/useQuoteManager';
+import PropertySearch from './Search/PropertySearch';
+import QuoteSearch from './Search/QuoteSearch';
+import QuoteForm from './Quote/QuoteForm';
+
+import './App.css';
 
 function App() {
-  const [tabValue, setTabValue] = useState(0);
-  const [searchResults, setSearchResults] = useState();
+  const [view, setView] = useState('propertySearch');
 
-  const { isAuthenticated, loading } = useAuth0();
+  const {
+    loading,
+    searchAddress,
+    searchResults,
+    createQuote,
+    fetchQuote,
+    updateQuote,
+    quoteResult = {},
+    sendApplication,
+    applicationSuccess,
+    resetQuoteState,
+    resetSearchResults,
+  } = useQuoteManager();
+  const { quote, input } = quoteResult;
 
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
+  async function startQuote(values) {
+    await createQuote(values);
+    setView('viewQuote');
   }
-  function TabPanel(props) {
-    const { children, value, index, ...other } = props;
 
+  const submitQuote = async (values) => {
+    await updateQuote({
+      quote,
+      input: values,
+    });
+  };
+
+  if (applicationSuccess) {
     return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography component="div">{children}</Typography>
-          </Box>
-        )}
+      <div>
+        <AppBar position="static">
+          <h6 style={{ textAlign: 'center' }}>TypTap Insurance Demo</h6>
+        </AppBar>
+        <div style={{ fontSize: '20px', textAlign: 'center', margin: '40px' }}>
+          Application sent Successfully. Check your email for a document from
+          docusign
+        </div>
+        <button
+          onClick={() => {
+            resetQuoteState();
+            setView('search');
+          }}
+          style={{ margin: 'auto' }}
+        >
+          New Quote
+        </button>
       </div>
     );
   }
 
-  const handleTabChange = (event, newTab) => {
-    setTabValue(newTab);
-  };
-
   return (
     <div className="App">
-      {loading ? (
-        <div>Loading</div>
-      ) : isAuthenticated ? (
-        <div>
-          <AppBar position="static">
-            <Typography variant="h6" sx={{ flexGrow: 1, margin: 2 }}>
-              TypTap Insurance Demo
-            </Typography>
-          </AppBar>
-          <Divider />
-          <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label="Search" {...a11yProps(0)} />
-            <Tab label="Create Quote" {...a11yProps(1)} />
-          </Tabs>
-          <TabPanel value={tabValue} index={0}>
-            <Search
-              searchResults={searchResults}
-              setSearchResults={setSearchResults}
-            />
-          </TabPanel>
-          <TabPanel value={tabValue} index={1}>
-            Create Quote
-          </TabPanel>
-        </div>
-      ) : (
-        <UnauthenticatedApp />
-      )}
+      <div>
+        <AppBar className="sticky" style={{ padding: '5px' }}>
+          <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex' }}>
+              <h6>
+                <div>TypTap</div>
+                Demo
+              </h6>
+              <button
+                style={{ width: '180px', marginLeft: '10px' }}
+                onClick={() => {
+                  setView('quoteSearch');
+                  resetSearchResults();
+                }}
+              >
+                Quote Search
+              </button>
+              <button
+                style={{ width: '180px' }}
+                onClick={() => {
+                  setView('propertySearch');
+                  resetSearchResults();
+                }}
+              >
+                Property Search
+              </button>
+              {input && view !== 'viewQuote' && (
+                <button
+                  style={{ width: '180px' }}
+                  onClick={() => {
+                    setView('viewQuote');
+                  }}
+                >
+                  View Quote
+                </button>
+              )}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 1,
+                justifyContent: 'space-evenly',
+                alignItems: 'end',
+              }}
+            >
+              {quote ? (
+                <>
+                  <div>
+                    Premium:{' '}
+                    {quote?.rating.totalPremium
+                      ? `$${quote.rating.totalPremium.toLocaleString('en', {
+                          minimumFractionDigits: 2,
+                        })}`
+                      : 'Awaiting additional info'}
+                  </div>
+                  <div>Quote State: {quote.quoteState}</div>
+                  <div>Quote Number: {quote.quoteNumber}</div>
+                </>
+              ) : null}
+            </div>
+          </Toolbar>
+        </AppBar>
+
+        {loading ? (
+          <Backdrop style={{ color: '#fff', zIndex: 999 }} open={loading}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        ) : null}
+
+        {view === 'quoteSearch' && (
+          <QuoteSearch
+            fetchQuote={fetchQuote}
+            searchResults={searchResults}
+            loading={loading}
+            setView={setView}
+          />
+        )}
+
+        {view === 'propertySearch' && (
+          <PropertySearch
+            searchAddress={searchAddress}
+            searchResults={searchResults}
+            createQuote={startQuote}
+            loading={loading}
+            setView={setView}
+          />
+        )}
+
+        {view === 'viewQuote' && input && (
+          <QuoteForm
+            input={input}
+            quote={quote}
+            sendApplication={sendApplication}
+            submitQuote={submitQuote}
+          />
+        )}
+      </div>
     </div>
   );
 }
