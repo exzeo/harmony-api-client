@@ -3,24 +3,41 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.18.0",
+    "@material-ui/core": "^4.12.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.2.1",
+    "axios": "^0.22.0",
+    "final-form": "^4.20.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-final-form": "^6.5.7",
+    "react-router-dom": "^5.3.0",
     "react-scripts": "5.0.0-next.47",
     "web-vitals": "^2.1.0"
+  },
+  "devDependencies": {
+    "husky": "^7.0.2",
+    "prettier": "^2.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,css,scss,json,md}": [
+      "prettier --write"
     ]
   },
   "browserslist": {
