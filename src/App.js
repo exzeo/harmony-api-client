@@ -1,24 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
 
+import { useAuth0 } from "./context/auth-context";
+// import UnauthenticatedApp from "./UnauthenticatedApp";
+
 function App() {
+  const {isAuthenticated, loading} = useAuth0();
+    console.log(loading);
+    console.log(isAuthenticated);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        {loading ? (
+            <div>Loading</div>
+        ) : isAuthenticated ? (
+            <div>Authenticated</div>
+        ) : (
+            <div>UnAuthenticated</div>
+        )}
+      </div>
   );
 }
 
