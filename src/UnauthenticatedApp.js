@@ -18,7 +18,7 @@ const UnauthenticatedApp = () => {
         }
     }, [loginWithRedirect, error]);
 
-    return <>{error && <div>Unauthenticated</div>}</>;
+    return <>{error && <div>{error.toString()}</div>}</>;
 };
 
 export default UnauthenticatedApp;

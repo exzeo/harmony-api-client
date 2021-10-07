@@ -6,11 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from './context/auth-context';
 
 const onRedirectCallback = (appState, history) => {
-    history.push(
-        appState && appState.targetUrl
-            ? appState.targetUrl
-            : window.location.pathname
-    );
+    // history.push(
+    //     appState && appState.targetUrl
+    //         ? appState.targetUrl
+    //         : window.location.pathname
+    // );
 };
 
 ReactDOM.render(

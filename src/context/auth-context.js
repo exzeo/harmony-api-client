@@ -7,7 +7,7 @@ const INVALID_STATE_MESSAGE =
     'It looks like you need to update your bookmark. Please select login below, enter your credentials, then re-save your bookmark after fully logging in.';
 
 const DEFAULT_REDIRECT_CALLBACK = (appState, history) => {
-    history.replace({}, document.title, window.location.pathname);
+    // history.replace({}, document.title, window.location.pathname);
 };
 
 export const Auth0Context = React.createContext();
@@ -59,9 +59,7 @@ export function Auth0Provider({
     useEffect(() => {
         const initAuth0 = async () => {
             try {
-                console.log('before createClient');
                 const auth0FromHook = await createAuth0Client(initOptions);
-                console.log('after createClient');
                 setAuth0(auth0FromHook);
 
                 if (window.location.search.includes('code=')) {
@@ -88,7 +86,8 @@ export function Auth0Provider({
                             headers: { authorization: `bearer ${accessToken}` }
                         })
                         .catch(error => {
-                            history.replace(`/accessDenied?error=${error}`);
+                            console.log(error);
+                            // history.replace(`/accessDenied?error=${error}`);
                         });
 
                     if (!(profile || '').data) {
