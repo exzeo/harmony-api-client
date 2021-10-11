@@ -12,17 +12,13 @@ export async function searchAddress({
                                         tor = 'single family',
                                         page = '1',
                                         pageSize = '10'
-                                    }) {
+                                    }, setResponse) {
     try {
-        //property/search
         const cleanAddress = trimWhiteSpace(address);
         axios({
             method: 'get',
             url: `${process.env.REACT_APP_API_URL}/property?searchText=${cleanAddress}&state=${state}`,
-        }).then((response) => console.log(response));
-        // const cleanQuery = encodeURI(
-        //     `/v1/search/${cleanAddress}/${state}/${tor}/HO3/${page}/${pageSize}`
-        // );
+        }).then((response) => setResponse(response.data.result.IndexResult));
     } catch (error) {
         throw error;
     }

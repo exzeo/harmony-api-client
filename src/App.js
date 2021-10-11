@@ -10,9 +10,11 @@ import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import {AppBar} from "@material-ui/core";
 import UnauthenticatedApp from "./UnauthenticatedApp";
+import Wizard from "./Wizard";
 
 function App() {
     const [tabValue, setTabValue] = useState(0);
+    const [searchResults, setSearchResults] = useState();
 
     const {isAuthenticated, loading} = useAuth0();
 
@@ -22,7 +24,6 @@ function App() {
             'aria-controls': `simple-tabpanel-${index}`,
         };
     }
-    console.log(isAuthenticated);
     function TabPanel(props) {
         const {children, value, index, ...other} = props;
 
@@ -47,6 +48,11 @@ function App() {
         setTabValue(newTab)
     }
 
+    const onSubmit = (values) => {
+        console.log('submitted');
+        console.log(values);
+    }
+
     return (
         <div className="App">
             {loading ? (
@@ -66,10 +72,14 @@ function App() {
                         <Tab label="Item Three" {...a11yProps(2)} />
                     </Tabs>
                     <TabPanel value={tabValue} index={0}>
-                        <Search/>
+                        <Search searchResults={searchResults} setSearchResults={setSearchResults} />
                     </TabPanel>
                     <TabPanel value={tabValue} index={1}>
-                        Second tab
+                        <Wizard initialValues={{}} onSubmit={onSubmit}>
+                            <div>Page one</div>
+                            <div>Page two</div>
+                            <div>Page 3</div>
+                        </Wizard>
                     </TabPanel>
                     <TabPanel value={tabValue} index={2}>
                         Third Tad
