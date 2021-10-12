@@ -37,7 +37,7 @@ function App() {
             >
                 {value === index && (
                     <Box sx={{p: 3}}>
-                        <Typography>{children}</Typography>
+                        <Typography component="div">{children}</Typography>
                     </Box>
                 )}
             </div>
@@ -60,19 +60,18 @@ function App() {
             ) : isAuthenticated ? (
                 <div>
                     <AppBar position="static">
-                        <Typography variant="h6" sx={{ flexGrow: 1, margin: 2 }}>
+                        <Typography variant="h6" sx={{ flexGrow: 1, margin: 2 }} component="div">
                             TypTap Insurance Demo
                         </Typography>
                     </AppBar>
 
                     <Divider/>
                     <Tabs value={tabValue} onChange={handleTabChange}>
-                        <Tab label="Search" {...a11yProps(0)} />
-                        <Tab label="Item Two" {...a11yProps(1)} />
-                        <Tab label="Item Three" {...a11yProps(2)} />
+                        <Tab label="Search" {...a11yProps(0)} disabled={tabValue !== 0}/>
+                        <Tab label="Create Quote" {...a11yProps(1)} disabled={tabValue !== 1}/>
                     </Tabs>
                     <TabPanel value={tabValue} index={0}>
-                        <Search searchResults={searchResults} setSearchResults={setSearchResults} />
+                        <Search searchResults={searchResults} setSearchResults={setSearchResults} setTab={setTabValue}/>
                     </TabPanel>
                     <TabPanel value={tabValue} index={1}>
                         <Wizard initialValues={{}} onSubmit={onSubmit}>
