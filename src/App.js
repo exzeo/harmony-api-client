@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import {AppBar} from "@material-ui/core";
-import UnauthenticatedApp from "./UnauthenticatedApp";
+import UnauthenticatedApp from "./temp/UnauthenticatedApp";
 import Wizard from "./Wizard";
 
 function App() {
@@ -79,9 +79,6 @@ function App() {
                             <div>Page two</div>
                             <div>Page 3</div>
                         </Wizard>
-                    </TabPanel>
-                    <TabPanel value={tabValue} index={2}>
-                        Third Tad
                     </TabPanel>
                 </div>
             ) : (

@@ -5,16 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from './context/auth-context';
 
-const onRedirectCallback = (appState, history) => {
-    // history.push(
-    //     appState && appState.targetUrl
-    //         ? appState.targetUrl
-    //         : window.location.pathname
-    // );
-};
+const onRedirectCallback = () => {};
 
 ReactDOM.render(
     <React.StrictMode>
+        {/* TODO provider will be removed when api is updated*/}
         <Auth0Provider
             domain={process.env.REACT_APP_AUTH0_DOMAIN}
             client_id={process.env.REACT_APP_AUTH0_CLIENT_ID}

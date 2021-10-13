@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useAuth0 } from './context/auth-context';
+import { useAuth0 } from '../context/auth-context';
 
 const UnauthenticatedApp = () => {
     const { loginWithRedirect, error } = useAuth0();

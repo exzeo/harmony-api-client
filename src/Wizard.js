@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
 import { Form } from 'react-final-form'
 
-export const Wizard = (props) => {
-    const { onSubmit, initialValues, children } = props;
+export const Wizard = ({ onSubmit, initialValues, children }) => {
     const [page, setPage] = useState(0);
 
     const next = () => {
