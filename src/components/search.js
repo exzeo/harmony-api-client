@@ -8,15 +8,14 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Form } from 'react-final-form'
 
-import {searchAddress} from "../data";
+import {createQuote, searchAddress} from "../data";
 import Box from "@material-ui/core/Box";
 
-const Search = ({searchResults, setSearchResults, setTab}) => {
+const Search = ({searchResults, setSearchResults, setTab, setLoadingData, setQuoteValues}) => {
     const [searchText, setSearchText] = useState('');
     const [selectedState, setSelectedState] = useState('FL');
 
     function handleChange(e) {
-        console.log(e.target.value);
         setSelectedState(e.target.value);
     }
 
@@ -28,6 +27,19 @@ const Search = ({searchResults, setSearchResults, setTab}) => {
     const handleTextChange = (e) => {
         e.preventDefault();
         setSearchText(e.target.value);
+    }
+
+    const newQuote = (id) => {
+        setLoadingData(true);
+        createQuote({
+            companyCode: "TTIC",
+            state: 'FL',
+            product: 'HO3',
+            propertyId: id,
+            setLoadingData,
+            setQuoteValues,
+            setTab,
+        })
     }
 
     const stateList = ['FL', 'MD', 'NJ', 'PA', 'SC']
@@ -76,7 +88,7 @@ const Search = ({searchResults, setSearchResults, setTab}) => {
                         <Grid container spacing={8}>
                             <Grid item xs={8}>
                                 <Card sx={{margin: 2}}>
-                                    <CardActionArea onClick={() => setTab(1)}>
+                                    <CardActionArea onClick={() => newQuote(property.id)}>
                                         <Typography align="left">{address1}{address2 && `, ${address2}`}</Typography>
                                         <Typography align="left">{city}, {state.toUpperCase()} {zip}</Typography>
                                     </CardActionArea>

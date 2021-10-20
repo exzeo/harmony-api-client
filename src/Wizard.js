@@ -26,6 +26,7 @@ export const Wizard = ({ onSubmit, initialValues, children }) => {
             >
                 {({ handleSubmit, submitting, values }) => (
                     <form onSubmit={handleSubmit}>
+                        {console.log('formValues', values)}
                         {children[page]}
                         <div className="buttons">
                             {page > 0 && (

@@ -23,3 +23,32 @@ export async function searchAddress({
         throw error;
     }
 }
+
+export async function createQuote({
+                                      companyCode,
+                                      state,
+                                      product,
+                                      propertyId,
+                                      setLoadingData,
+                                      setQuoteValues,
+    setTab
+                                  }) {
+    try {
+        axios({
+            method: 'post',
+            url: `${process.env.REACT_APP_API_URL}/quote`,
+            data: {
+                companyCode,
+                state,
+                product,
+                propertyId,
+            },
+        }).then(response => {
+            setLoadingData(false);
+            setQuoteValues(response);
+            setTab(1);
+        });
+    } catch (error) {
+        throw error;
+    }
+};

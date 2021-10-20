@@ -11,10 +11,13 @@ import Divider from "@material-ui/core/Divider";
 import {AppBar} from "@material-ui/core";
 import UnauthenticatedApp from "./temp/UnauthenticatedApp";
 import Wizard from "./Wizard";
+import Coverage from "./components/coverage";
 
 function App() {
     const [tabValue, setTabValue] = useState(0);
     const [searchResults, setSearchResults] = useState();
+    const [loadingData, setLoadingData] = useState();
+    const [quoteValues, setQuoteValues] = useState();
 
     const {isAuthenticated, loading} = useAuth0();
 
@@ -49,13 +52,12 @@ function App() {
     }
 
     const onSubmit = (values) => {
-        console.log('submitted');
         console.log(values);
     }
 
     return (
         <div className="App">
-            {loading ? (
+            {loading || loadingData ? (
                 <div>Loading</div>
             ) : isAuthenticated ? (
                 <div>
@@ -71,11 +73,14 @@ function App() {
                         <Tab label="Create Quote" {...a11yProps(1)} disabled={tabValue !== 1}/>
                     </Tabs>
                     <TabPanel value={tabValue} index={0}>
-                        <Search searchResults={searchResults} setSearchResults={setSearchResults} setTab={setTabValue}/>
+                        <Search searchResults={searchResults} setSearchResults={setSearchResults} setTab={setTabValue} setLoadingData={setLoadingData} setQuoteValues={setQuoteValues}/>
                     </TabPanel>
                     <TabPanel value={tabValue} index={1}>
-                        <Wizard initialValues={{}} onSubmit={onSubmit}>
-                            <div>Page one</div>
+                        <Wizard initialValues={quoteValues?.data?.result} onSubmit={onSubmit}>
+                            <div>
+                                <Coverage coverageData={quoteValues?.data?.result?.coverageLimits}/>
+                                Page One
+                            </div>
                             <div>Page two</div>
                             <div>Page 3</div>
                         </Wizard>
