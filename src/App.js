@@ -12,6 +12,7 @@ import {AppBar} from "@material-ui/core";
 import UnauthenticatedApp from "./temp/UnauthenticatedApp";
 import Wizard from "./Wizard";
 import Coverage from "./components/coverage";
+import Deductables from "./components/deductables";
 
 function App() {
     const [tabValue, setTabValue] = useState(0);
@@ -79,6 +80,7 @@ function App() {
                         <Wizard initialValues={quoteValues?.data?.result} onSubmit={onSubmit}>
                             <div>
                                 <Coverage coverageData={quoteValues?.data?.result?.coverageLimits}/>
+                                <Deductables deductiblesData={quoteValues?.data?.result?.deductibles}/>
                                 Page One
                             </div>
                             <div>Page two</div>
