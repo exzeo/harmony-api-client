@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import { Field } from 'react-final-form'
-import InputField from "./inputField";
 
 const Coverage = ({coverageData, values}) => {
     const {
@@ -9,18 +7,21 @@ const Coverage = ({coverageData, values}) => {
         medicalPayments,
         moldLiability,
         moldProperty,
-        OrdinanceOrLaw,
+        ordinanceOrLaw,
         otherStructures,
         personalLiability,
         personalProperty
     } = coverageData;
-    const formattedData = Object.entries(coverageData);
 
-    const updateValue = (e, field) => {
-        console.log(e.target.value);
-        field.value.integer = e.target.value;
-        console.log()
-    }
+    // const updateValue = (e, field) => {
+    //     console.log(e.target.value);
+    //     field.value.integer = e.target.value;
+    // }
+    // const calculatePercentage = (percent, value) => {
+    //     console.log('calculate percentage',((percent * value) / 100));
+    //     const fieldValue = ((percent * value) / 100);
+    //     return fieldValue;
+    // }
 
     return (
         <>
@@ -36,17 +37,81 @@ const Coverage = ({coverageData, values}) => {
                     max={dwelling.schema.maximum}
                     placeholder="$10"
                 />
-                {console.log(dwelling)}
             </div>
             <div>
-                <label>First Name</label>
+                <label>{lossOfUse.displayText}</label>
                 <Field
-                    name="firstName"
+                    name={'coverageLimits.lossOfUse.value.integer'}
                     component="input"
-                    type="text"
-                    placeholder="first Name"
+                    readOnly
+                    type={lossOfUse.schema.type}
+                    initialValue={((lossOfUse.schema.default * dwelling.value.integer) / 100)}
+                    placeholder={'Loss of Use'}
+                    value={((lossOfUse.schema.default * dwelling.value.integer) / 100)}
                 />
-
+            </div>
+            <div>
+                <label>{medicalPayments.displayText}</label>
+                <Field
+                    name={'coverageLimits.medicalPayments.value.integer'}
+                    component="input"
+                    type={medicalPayments.schema.type}
+                    placeholder={'Medical Payments'}
+                />
+            </div>
+            <div>
+                <label>{moldLiability.displayText}</label>
+                <Field
+                    name={'coverageLimits.moldLiability.value.integer'}
+                    component="input"
+                    type={moldLiability.schema.type}
+                    placeholder={'Mold Liability'}
+                />
+            </div>
+            <div>
+                <label>{moldProperty.displayText}</label>
+                <Field
+                    name={'coverageLimits.moldProperty.value.integer'}
+                    component="input"
+                    type={moldProperty.schema.type}
+                    placeholder={'Mold Property'}
+                />
+            </div>
+            <div>
+                <label>{ordinanceOrLaw.displayText}</label>
+                <Field
+                    name={'coverageLimits.ordinanceOrLaw.value.integer'}
+                    component="input"
+                    type={ordinanceOrLaw.schema.type}
+                    placeholder={'Ordinance or Law'}
+                />
+            </div>
+            <div>
+                <label>{otherStructures.displayText}</label>
+                <Field
+                    name={'coverageLimits.ordinanceOrLaw.value.integer'}
+                    component="input"
+                    type={otherStructures.schema.type}
+                    placeholder={'Other Structures'}
+                />
+            </div>
+            <div>
+                <label>{personalLiability.displayText}</label>
+                <Field
+                    name={'coverageLimits.personalLiability.value.integer'}
+                    component="input"
+                    type={personalLiability.schema.type}
+                    placeholder={'Personal Liability'}
+                />
+            </div>
+            <div>
+                <label>{personalProperty.displayText}</label>
+                <Field
+                    name={'coverageLimits.personalLiability.value.integer'}
+                    component="input"
+                    type={personalProperty.schema.type}
+                    placeholder={'Personal Property'}
+                />
             </div>
             <button>Submit</button>
         </>
