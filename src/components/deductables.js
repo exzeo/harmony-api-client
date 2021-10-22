@@ -1,40 +1,49 @@
 import { Field } from 'react-final-form'
+import Grid from "@material-ui/core/Grid";
 
-const Deductables = (deductibles) => {
+const Deductables = ({deductiblesData}) => {
     const {
         allOtherPerils,
         hurricane,
         sinkhole,
-    } = deductibles;
+    } = deductiblesData;
+
+    console.log('deductibles', deductiblesData);
 
 
     return (
         <>
-            <div>Deductibles</div>
-            <div>
-                <Field
-                    name={'deductibles.allOtherPerils.value.integer'}
-                    component="input"
-                    type={allOtherPerils.schema.type}
-                    placeholder={'Medical Payments'}
-                />
-            </div>
-            <div>
-                <Field
-                    name={'deductibles.allOtherPerils.value.integer'}
-                    component="input"
-                    type={allOtherPerils.schema.type}
-                    placeholder={'Medical Payments'}
-                />
-            </div>
-            <div>
-                <Field
-                    name={'deductibles.allOtherPerils.value.integer'}
-                    component="input"
-                    type={allOtherPerils.schema.type}
-                    placeholder={'Medical Payments'}
-                />
-            </div>
+            <Grid container>
+                <Grid item xs={12}>Deductibles</Grid>
+                <Grid item xs={6}>
+                    <label>{allOtherPerils.displayText}</label>
+                    <Field
+                        name={'deductibles.allOtherPerils.value.integer'}
+                        component="input"
+                        type={allOtherPerils.schema.type}
+                        placeholder={'All Other Perils'}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <label>{hurricane.displayText}</label>
+                    <Field
+                        name={'deductibles.hurricane.value.integer'}
+                        component="input"
+                        type={hurricane.schema.type}
+                        placeholder={'Hurricane'}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <label>{sinkhole.displayText}</label>
+                    <Field
+                        name={'deductibles.sinkhole.value.integer'}
+                        component="input"
+                        type={sinkhole.schema.type}
+                        placeholder={'Sinkhole'}
+                    />
+                </Grid>
+            </Grid>
+
         </>
     )
 }

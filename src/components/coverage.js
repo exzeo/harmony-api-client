@@ -1,4 +1,5 @@
 import { Field } from 'react-final-form'
+import Grid from "@material-ui/core/Grid";
 
 const Coverage = ({coverageData, values}) => {
     const {
@@ -13,19 +14,9 @@ const Coverage = ({coverageData, values}) => {
         personalProperty
     } = coverageData;
 
-    // const updateValue = (e, field) => {
-    //     console.log(e.target.value);
-    //     field.value.integer = e.target.value;
-    // }
-    // const calculatePercentage = (percent, value) => {
-    //     console.log('calculate percentage',((percent * value) / 100));
-    //     const fieldValue = ((percent * value) / 100);
-    //     return fieldValue;
-    // }
-
     return (
-        <>
-            <div>
+        <Grid container>
+            <Grid item xs={6}>
                 <label>{dwelling.displayText}</label>
                 <Field
                     name={'coverageLimits.dwelling.value.integer'}
@@ -37,8 +28,8 @@ const Coverage = ({coverageData, values}) => {
                     max={dwelling.schema.maximum}
                     placeholder="$10"
                 />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={6}>
                 <label>{lossOfUse.displayText}</label>
                 <Field
                     name={'coverageLimits.lossOfUse.value.integer'}
@@ -49,8 +40,8 @@ const Coverage = ({coverageData, values}) => {
                     placeholder={'Loss of Use'}
                     value={((lossOfUse.schema.default * dwelling.value.integer) / 100)}
                 />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={6}>
                 <label>{medicalPayments.displayText}</label>
                 <Field
                     name={'coverageLimits.medicalPayments.value.integer'}
@@ -58,8 +49,8 @@ const Coverage = ({coverageData, values}) => {
                     type={medicalPayments.schema.type}
                     placeholder={'Medical Payments'}
                 />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={6}>
                 <label>{moldLiability.displayText}</label>
                 <Field
                     name={'coverageLimits.moldLiability.value.integer'}
@@ -67,8 +58,8 @@ const Coverage = ({coverageData, values}) => {
                     type={moldLiability.schema.type}
                     placeholder={'Mold Liability'}
                 />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={6}>
                 <label>{moldProperty.displayText}</label>
                 <Field
                     name={'coverageLimits.moldProperty.value.integer'}
@@ -76,8 +67,8 @@ const Coverage = ({coverageData, values}) => {
                     type={moldProperty.schema.type}
                     placeholder={'Mold Property'}
                 />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={6}>
                 <label>{ordinanceOrLaw.displayText}</label>
                 <Field
                     name={'coverageLimits.ordinanceOrLaw.value.integer'}
@@ -85,8 +76,8 @@ const Coverage = ({coverageData, values}) => {
                     type={ordinanceOrLaw.schema.type}
                     placeholder={'Ordinance or Law'}
                 />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={6}>
                 <label>{otherStructures.displayText}</label>
                 <Field
                     name={'coverageLimits.ordinanceOrLaw.value.integer'}
@@ -94,8 +85,8 @@ const Coverage = ({coverageData, values}) => {
                     type={otherStructures.schema.type}
                     placeholder={'Other Structures'}
                 />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={6}>
                 <label>{personalLiability.displayText}</label>
                 <Field
                     name={'coverageLimits.personalLiability.value.integer'}
@@ -103,8 +94,8 @@ const Coverage = ({coverageData, values}) => {
                     type={personalLiability.schema.type}
                     placeholder={'Personal Liability'}
                 />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={6}>
                 <label>{personalProperty.displayText}</label>
                 <Field
                     name={'coverageLimits.personalLiability.value.integer'}
@@ -112,9 +103,8 @@ const Coverage = ({coverageData, values}) => {
                     type={personalProperty.schema.type}
                     placeholder={'Personal Property'}
                 />
-            </div>
-            <button>Submit</button>
-        </>
+            </Grid>
+        </Grid>
 
     )
 }

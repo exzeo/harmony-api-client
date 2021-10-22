@@ -52,3 +52,34 @@ export async function createQuote({
         throw error;
     }
 };
+
+export async function updateQuote({
+                                      companyCode,
+                                      state,
+                                      product,
+                                      propertyId,
+                                      setLoadingData,
+                                      setQuoteValues,
+                                      setTab
+                                  }) {
+    try {
+        axios({
+            method: 'put',
+            url: `${process.env.REACT_APP_API_URL}/quote`,
+            data: {
+                companyCode,
+                state,
+                product,
+                propertyId,
+            },
+        }).then(response => {
+            setLoadingData(false);
+            setQuoteValues(response);
+            setTab(1);
+        });
+    } catch (error) {
+        throw error;
+    }
+};
+
+
