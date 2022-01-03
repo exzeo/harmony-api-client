@@ -6,21 +6,21 @@ import Search from "./components/search";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+// import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import {AppBar} from "@material-ui/core";
 import UnauthenticatedApp from "./temp/UnauthenticatedApp";
-import Wizard from "./Wizard";
-import Coverage from "./components/coverage";
-import Deductables from "./components/deductables";
+import BillingSection from "./components/BillingSection";
+import QuoteSection from "./components/QuoteSection";
 
 function App() {
     const [tabValue, setTabValue] = useState(0);
     const [searchResults, setSearchResults] = useState();
-    const [loadingData, setLoadingData] = useState();
+    const [loadingData] = useState();
+    const [loadingQuote, setLoadingQuote] = useState();
     const [quoteValues, setQuoteValues] = useState();
 
-    const {isAuthenticated, loading} = useAuth0();
+    const {loading} = useAuth0();
 
     function a11yProps(index) {
         return {
@@ -28,39 +28,41 @@ function App() {
             'aria-controls': `simple-tabpanel-${index}`,
         };
     }
-    function TabPanel(props) {
-        const {children, value, index, ...other} = props;
-
-        return (
-            <div
-                role="tabpanel"
-                hidden={value !== index}
-                id={`simple-tabpanel-${index}`}
-                aria-labelledby={`simple-tab-${index}`}
-                {...other}
-            >
-                {value === index && (
-                    <Box sx={{p: 3}}>
-                        <Typography component="div">{children}</Typography>
-                    </Box>
-                )}
-            </div>
-        );
-    }
+    // function TabPanel(props) {
+    //     const {children, value, index, ...other} = props;
+    //
+    //     return (
+    //         <div
+    //             role="tabpanel"
+    //             hidden={value !== index}
+    //             id={`simple-tabpanel-${index}`}
+    //             aria-labelledby={`simple-tab-${index}`}
+    //             {...other}
+    //         >
+    //             {value === index && (
+    //                 <Box sx={{p: 3}}>
+    //                     <Typography component="div">{children}</Typography>
+    //                 </Box>
+    //             )}
+    //         </div>
+    //     );
+    // }
 
     const handleTabChange = (event, newTab) => {
         setTabValue(newTab)
     }
 
-    const onSubmit = (values) => {
-        console.log(values);
-    }
+    // const onSubmit = (values) => {
+    //     console.log(values);
+    // }
 
     return (
         <div className="App">
+            {/* set ternary to isAuthenticated */}
             {loading || loadingData ? (
                 <div>Loading</div>
-            ) : isAuthenticated ? (
+            ) : true ? (
+
                 <div>
                     <AppBar position="static">
                         <Typography variant="h6" sx={{ flexGrow: 1, margin: 2 }} component="div">
@@ -71,22 +73,15 @@ function App() {
                     <Divider/>
                     <Tabs value={tabValue} onChange={handleTabChange}>
                         <Tab label="Search" {...a11yProps(0)} disabled={tabValue !== 0}/>
-                        <Tab label="Create Quote" {...a11yProps(1)} disabled={tabValue !== 1}/>
                     </Tabs>
-                    <TabPanel value={tabValue} index={0}>
-                        <Search searchResults={searchResults} setSearchResults={setSearchResults} setTab={setTabValue} setLoadingData={setLoadingData} setQuoteValues={setQuoteValues}/>
-                    </TabPanel>
-                    <TabPanel value={tabValue} index={1}>
-                        <Wizard initialValues={quoteValues?.data?.result} onSubmit={onSubmit}>
-                            <div>
-                                <Coverage coverageData={quoteValues?.data?.result?.coverageLimits}/>
-                                <Deductables deductiblesData={quoteValues?.data?.result?.deductibles}/>
-                                Page One
-                            </div>
-                            <div>Page two</div>
-                            <div>Page 3</div>
-                        </Wizard>
-                    </TabPanel>
+                    <Search searchResults={searchResults} setSearchResults={setSearchResults} setTab={setTabValue} setLoadingData={setLoadingQuote} setQuoteValues={setQuoteValues}/>
+                    {loadingQuote && <div>Loading Quoite</div>}
+                    {quoteValues ?
+                        <>
+                            <BillingSection billing={quoteValues.input.categories.billing} quote={quoteValues.input.categories.quote} />
+                            <QuoteSection quote={quoteValues.input.categories.quote} />
+                        </>
+                        : null}
                 </div>
             ) : (
                 <UnauthenticatedApp />
