@@ -16,7 +16,7 @@ export async function searchAddress({
     try {
         const cleanAddress = trimWhiteSpace(address);
         axios({
-            headers: {Authorization: 'bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhuVmF3NzRVcVhTdHA5RkRRbHc0QWQtb2RFQkJJaFcxUVBBZUxuNzN4ekkifQ.eyJ1c2VybmFtZSI6ImFmM2JldGEiLCJraW5kIjoiYWNjZXNzX3Rva2VuIiwianRpIjoiVVhzX3k2TXBTWXI1RUNfSmNoUGF0Iiwic3ViIjoiOTdXQnliSEpQRlV5QTJ5ajBXRS0iLCJpYXQiOjE2NDEzMzA0MDIsImV4cCI6MTY0MTQxNjgwMiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImlzcyI6Imh0dHBzOi8vaWQudHJ5Y2MudGVjaC8iLCJhdWQiOiJJNExRcE1RQnhBdzdVLW0tVjh1UzUifQ.e2-JC9GdLZLaxuhOrRXhk8aSDRV_174Ubuw5NHOXDNkQ-nhC0HooWJDgV1aZMiKBCgQFLCBUx3OZ-S0p8PNd3S3M7f4PC8IrvomuY6BpB_9-El1qiFgFqAcT8zO1xcYHPj_Nq-V8q8vdOTMZMp7B4eYnU2615qnkMNPZL9lq7AluAcmsN3uRURUI8YB1kDyYNuNQInyuHte2_cVuevXMcbLdpTaKa1iSbag0EX2XqZQWJsbZkjbOplp_MhWWbVt_4zP-eY8DYKDwcep3JrLJekpN-i2ZsAcb6s6fLEIyoQcWCjKsaeiupVsqlQ4vOHIMg4MpwDMRTz-etCUO1OQCMw'},
+            headers: {Authorization: 'bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhuVmF3NzRVcVhTdHA5RkRRbHc0QWQtb2RFQkJJaFcxUVBBZUxuNzN4ekkifQ.eyJ1c2VybmFtZSI6ImFmM2JldGEiLCJraW5kIjoiYWNjZXNzX3Rva2VuIiwianRpIjoiM1M0bVdOYk16TGtpaHdXQUFvalgxIiwic3ViIjoiOTdXQnliSEpQRlV5QTJ5ajBXRS0iLCJpYXQiOjE2NDE0MTkzMDksImV4cCI6MTY0MTUwNTcwOSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImlzcyI6Imh0dHBzOi8vaWQudHJ5Y2MudGVjaC8iLCJhdWQiOiJJNExRcE1RQnhBdzdVLW0tVjh1UzUifQ.dPOkEgaIViDP-nn8lajKYq5NkXSCdbhaANYtg9-WNA2P2qJKEwej7OAtzleVVf7oagNggEQjduk1WIZkQYvM81MMdEU9tQrLlh3JE9700wkf9KP066230ZRPv5YH17l8QwK25pD0DMV7eBKNDo3XlvCitbc2AoB7UgeI6Hvf9vYtF6X7cBa7BvLbzmyB96buZVws7UIWI5dhywdgpwgpAdwNLwrW17uxeJFubxEhh3n14dOQFsFmf9hiDUiPgnLgm7ieeXeOTj_8vruRBYyZuutjepq9iy2cj8O1u1M0ntcNRFbf6kkiKt3UzrkH8u9A_8FYx6iX9-WQPkcHFArG2Q'},
             method: 'get',
             url: `${process.env.REACT_APP_API_URL}/property?searchText=${cleanAddress}&state=${state}`,
         }).then((response) => setResponse(response.data.result.IndexResult));
@@ -32,11 +32,11 @@ export async function createQuote({
                                       propertyId,
                                       setLoadingData,
                                       setQuoteValues,
-    setTab
+                                      setTab
                                   }) {
     try {
         axios({
-            headers: {Authorization: 'bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhuVmF3NzRVcVhTdHA5RkRRbHc0QWQtb2RFQkJJaFcxUVBBZUxuNzN4ekkifQ.eyJ1c2VybmFtZSI6ImFmM2JldGEiLCJraW5kIjoiYWNjZXNzX3Rva2VuIiwianRpIjoiVVhzX3k2TXBTWXI1RUNfSmNoUGF0Iiwic3ViIjoiOTdXQnliSEpQRlV5QTJ5ajBXRS0iLCJpYXQiOjE2NDEzMzA0MDIsImV4cCI6MTY0MTQxNjgwMiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImlzcyI6Imh0dHBzOi8vaWQudHJ5Y2MudGVjaC8iLCJhdWQiOiJJNExRcE1RQnhBdzdVLW0tVjh1UzUifQ.e2-JC9GdLZLaxuhOrRXhk8aSDRV_174Ubuw5NHOXDNkQ-nhC0HooWJDgV1aZMiKBCgQFLCBUx3OZ-S0p8PNd3S3M7f4PC8IrvomuY6BpB_9-El1qiFgFqAcT8zO1xcYHPj_Nq-V8q8vdOTMZMp7B4eYnU2615qnkMNPZL9lq7AluAcmsN3uRURUI8YB1kDyYNuNQInyuHte2_cVuevXMcbLdpTaKa1iSbag0EX2XqZQWJsbZkjbOplp_MhWWbVt_4zP-eY8DYKDwcep3JrLJekpN-i2ZsAcb6s6fLEIyoQcWCjKsaeiupVsqlQ4vOHIMg4MpwDMRTz-etCUO1OQCMw'},
+            headers: {Authorization: 'bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhuVmF3NzRVcVhTdHA5RkRRbHc0QWQtb2RFQkJJaFcxUVBBZUxuNzN4ekkifQ.eyJ1c2VybmFtZSI6ImFmM2JldGEiLCJraW5kIjoiYWNjZXNzX3Rva2VuIiwianRpIjoiM1M0bVdOYk16TGtpaHdXQUFvalgxIiwic3ViIjoiOTdXQnliSEpQRlV5QTJ5ajBXRS0iLCJpYXQiOjE2NDE0MTkzMDksImV4cCI6MTY0MTUwNTcwOSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImlzcyI6Imh0dHBzOi8vaWQudHJ5Y2MudGVjaC8iLCJhdWQiOiJJNExRcE1RQnhBdzdVLW0tVjh1UzUifQ.dPOkEgaIViDP-nn8lajKYq5NkXSCdbhaANYtg9-WNA2P2qJKEwej7OAtzleVVf7oagNggEQjduk1WIZkQYvM81MMdEU9tQrLlh3JE9700wkf9KP066230ZRPv5YH17l8QwK25pD0DMV7eBKNDo3XlvCitbc2AoB7UgeI6Hvf9vYtF6X7cBa7BvLbzmyB96buZVws7UIWI5dhywdgpwgpAdwNLwrW17uxeJFubxEhh3n14dOQFsFmf9hiDUiPgnLgm7ieeXeOTj_8vruRBYyZuutjepq9iy2cj8O1u1M0ntcNRFbf6kkiKt3UzrkH8u9A_8FYx6iX9-WQPkcHFArG2Q'},
             method: 'post',
             url: `${process.env.REACT_APP_API_URL}/quote`,
             data: {
@@ -55,33 +55,24 @@ export async function createQuote({
     }
 };
 
-export async function updateQuote({
-                                      companyCode,
-                                      state,
-                                      product,
-                                      propertyId,
-                                      setLoadingData,
-                                      setQuoteValues,
-                                      setTab
-                                  }) {
+export async function updateQuote(e, input, quote) {
+    e.preventDefault();
+
     try {
         axios({
             method: 'put',
-            url: `${process.env.REACT_APP_API_URL}/quote`,
+            url: `${process.env.REACT_APP_API_URL}/quote/${quote.quoteNumber}`,
             data: {
-                companyCode,
-                state,
-                product,
-                propertyId,
+                quote,
+                input
             },
         }).then(response => {
-            setLoadingData(false);
-            setQuoteValues(response);
-            setTab(1);
+            console.log('response',response);
+            // setLoadingData(false);
+            // setQuoteValues(response);
         });
     } catch (error) {
+        console.log(error);
         throw error;
     }
 };
-
-
