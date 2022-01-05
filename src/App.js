@@ -1,10 +1,10 @@
 import './App.css';
 import {useState} from 'react';
+import {Form} from 'react-final-form'
 
 import {useAuth0} from "./context/auth-context";
 import Search from "./components/search";
 import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 // import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
@@ -22,12 +22,12 @@ function App() {
 
     const {loading} = useAuth0();
 
-    function a11yProps(index) {
-        return {
-            id: `simple-tab-${index}`,
-            'aria-controls': `simple-tabpanel-${index}`,
-        };
-    }
+    // function a11yProps(index) {
+    //     return {
+    //         id: `simple-tab-${index}`,
+    //         'aria-controls': `simple-tabpanel-${index}`,
+    //     };
+    // }
     // function TabPanel(props) {
     //     const {children, value, index, ...other} = props;
     //
@@ -72,15 +72,22 @@ function App() {
 
                     <Divider/>
                     <Tabs value={tabValue} onChange={handleTabChange}>
-                        <Tab label="Search" {...a11yProps(0)} disabled={tabValue !== 0}/>
+                        {/*<Tab label="Search" {...a11yProps(0)} disabled={tabValue !== 0}/>*/}
                     </Tabs>
                     <Search searchResults={searchResults} setSearchResults={setSearchResults} setTab={setTabValue} setLoadingData={setLoadingQuote} setQuoteValues={setQuoteValues}/>
-                    {loadingQuote && <div>Loading Quoite</div>}
+
+                    {loadingQuote && <div>Loading Quote</div>}
                     {quoteValues ?
-                        <>
-                            <BillingSection billing={quoteValues.input.categories.billing} quote={quoteValues.input.categories.quote} />
-                            <QuoteSection quote={quoteValues.input.categories.quote} />
-                        </>
+                        <Form onSubmit={x => x}>
+                            {() => (
+                                <form>
+                                    {/*<BillingSection billing={quoteValues.input.categories.billing} quote={quoteValues.input.categories.quote} />*/}
+                                    <QuoteSection quote={quoteValues.input.categories.quote} />
+                                </form>
+                                )
+                            }
+
+                        </Form>
                         : null}
                 </div>
             ) : (

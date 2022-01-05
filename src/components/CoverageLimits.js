@@ -1,7 +1,7 @@
 import { Field } from 'react-final-form'
 import Grid from "@material-ui/core/Grid";
 
-const Coverage = ({coverageData, values}) => {
+const CoverageLimits = ({coverageData, values}) => {
     const {
         dwelling,
         lossOfUse,
@@ -109,4 +109,4 @@ const Coverage = ({coverageData, values}) => {
     )
 }
 
-export default Coverage;
+export default CoverageLimits;

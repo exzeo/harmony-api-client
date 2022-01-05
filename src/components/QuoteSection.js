@@ -1,19 +1,27 @@
-import {Form, Field} from 'react-final-form'
+import CoverageLimits from './CoverageLimits';
+import CoverageOptions from './CoverageOptions';
+import Deductibles from './Deductables';
 
-const QuoteSection = ({ quote }) => {
+const QuoteSection = ({quote}) => {
+    const {
+        additionalInterests,
+        coverageLimits,
+        coverageOptions,
+        deductibles,
+        policyHolderMailingAddress,
+        policyHolders,
+        underwritingAnswers
+    } = quote.properties
+
+    console.log('quote', quote);
+
     return (
         <div>
-            <Form onSubmit={x => x}>
-                {({handleSubmit, submitting, values}) => (
-                    <form>
-                        <Field
-                            name={quote.properties.coverageLimits.dwelling.name}
-                            component='input'
-                            type={quote.properties.coverageLimits.dewlling.schema.type}
-                        />
-                    </form>
-                )}
-            </Form>
+            <div>Coverage Limits</div>
+            <CoverageLimits coverageData={coverageLimits} />
+            <div>Coverage Options</div>
+            <CoverageOptions coverageOptions={coverageOptions} />
+            <Deductibles deductiblesData={deductibles}/>
         </div>
     )
 }

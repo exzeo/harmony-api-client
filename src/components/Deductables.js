@@ -8,9 +8,6 @@ const Deductables = ({deductiblesData}) => {
         sinkhole,
     } = deductiblesData;
 
-    console.log('deductibles', deductiblesData);
-
-
     return (
         <>
             <Grid container>
