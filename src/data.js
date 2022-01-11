@@ -2,6 +2,7 @@ import axios from "axios";
 
 const trimWhiteSpace = value =>
     value ? value.replace(/\s+/g, ' ').trim() : value;
+const authorizationHeader = 'bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhuVmF3NzRVcVhTdHA5RkRRbHc0QWQtb2RFQkJJaFcxUVBBZUxuNzN4ekkifQ.eyJ1c2VybmFtZSI6ImFmM2JldGEiLCJraW5kIjoiYWNjZXNzX3Rva2VuIiwianRpIjoiNzNOZXo3ZFZGSkgtaC1xYktDVXlHIiwic3ViIjoiOTdXQnliSEpQRlV5QTJ5ajBXRS0iLCJpYXQiOjE2NDE4MjI2MDksImV4cCI6MTY0MTkwOTAwOSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImlzcyI6Imh0dHBzOi8vaWQudHJ5Y2MudGVjaC8iLCJhdWQiOiJJNExRcE1RQnhBdzdVLW0tVjh1UzUifQ.R_tllQDv56QzYc1VXLh88uPLo-DDvo1yLWVom3wSUyGKm51CAbPI9avUpS2kfP8SMEhj18walPvE3oyVBrRBGyGVM-4puJcY5rC2ljfb7KZgQrHmowOzw8fdPiMY5TtNUn4evsoo7XQhUxa_62FtKdDEckVQ2gN8Yg_qzhFf3NDpgXY3T2t-7azuyWzYkI69cZLKvdETyucZT23VWkfjBREWI3bAtvHpTILHomqbCTACFe3NCbBW9QkCCxIQIqxkQpRxNG5QlQ8AUpdjiFLX-OsAeWgW4OFyNWJHZ1CKZq8i4pNXeOKaTHFcTdzwbS88u7NsomtlbdiTKU51FEyq0w';
 
 export async function searchAddress({
                                         address,
@@ -16,7 +17,7 @@ export async function searchAddress({
     try {
         const cleanAddress = trimWhiteSpace(address);
         axios({
-            headers: {Authorization: 'bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhuVmF3NzRVcVhTdHA5RkRRbHc0QWQtb2RFQkJJaFcxUVBBZUxuNzN4ekkifQ.eyJ1c2VybmFtZSI6ImFmM2JldGEiLCJraW5kIjoiYWNjZXNzX3Rva2VuIiwianRpIjoiM1M0bVdOYk16TGtpaHdXQUFvalgxIiwic3ViIjoiOTdXQnliSEpQRlV5QTJ5ajBXRS0iLCJpYXQiOjE2NDE0MTkzMDksImV4cCI6MTY0MTUwNTcwOSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImlzcyI6Imh0dHBzOi8vaWQudHJ5Y2MudGVjaC8iLCJhdWQiOiJJNExRcE1RQnhBdzdVLW0tVjh1UzUifQ.dPOkEgaIViDP-nn8lajKYq5NkXSCdbhaANYtg9-WNA2P2qJKEwej7OAtzleVVf7oagNggEQjduk1WIZkQYvM81MMdEU9tQrLlh3JE9700wkf9KP066230ZRPv5YH17l8QwK25pD0DMV7eBKNDo3XlvCitbc2AoB7UgeI6Hvf9vYtF6X7cBa7BvLbzmyB96buZVws7UIWI5dhywdgpwgpAdwNLwrW17uxeJFubxEhh3n14dOQFsFmf9hiDUiPgnLgm7ieeXeOTj_8vruRBYyZuutjepq9iy2cj8O1u1M0ntcNRFbf6kkiKt3UzrkH8u9A_8FYx6iX9-WQPkcHFArG2Q'},
+            headers: {Authorization: authorizationHeader},
             method: 'get',
             url: `${process.env.REACT_APP_API_URL}/property?searchText=${cleanAddress}&state=${state}`,
         }).then((response) => setResponse(response.data.result.IndexResult));
@@ -36,7 +37,7 @@ export async function createQuote({
                                   }) {
     try {
         axios({
-            headers: {Authorization: 'bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhuVmF3NzRVcVhTdHA5RkRRbHc0QWQtb2RFQkJJaFcxUVBBZUxuNzN4ekkifQ.eyJ1c2VybmFtZSI6ImFmM2JldGEiLCJraW5kIjoiYWNjZXNzX3Rva2VuIiwianRpIjoiM1M0bVdOYk16TGtpaHdXQUFvalgxIiwic3ViIjoiOTdXQnliSEpQRlV5QTJ5ajBXRS0iLCJpYXQiOjE2NDE0MTkzMDksImV4cCI6MTY0MTUwNTcwOSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImlzcyI6Imh0dHBzOi8vaWQudHJ5Y2MudGVjaC8iLCJhdWQiOiJJNExRcE1RQnhBdzdVLW0tVjh1UzUifQ.dPOkEgaIViDP-nn8lajKYq5NkXSCdbhaANYtg9-WNA2P2qJKEwej7OAtzleVVf7oagNggEQjduk1WIZkQYvM81MMdEU9tQrLlh3JE9700wkf9KP066230ZRPv5YH17l8QwK25pD0DMV7eBKNDo3XlvCitbc2AoB7UgeI6Hvf9vYtF6X7cBa7BvLbzmyB96buZVws7UIWI5dhywdgpwgpAdwNLwrW17uxeJFubxEhh3n14dOQFsFmf9hiDUiPgnLgm7ieeXeOTj_8vruRBYyZuutjepq9iy2cj8O1u1M0ntcNRFbf6kkiKt3UzrkH8u9A_8FYx6iX9-WQPkcHFArG2Q'},
+            headers: {Authorization: authorizationHeader},
             method: 'post',
             url: `${process.env.REACT_APP_API_URL}/quote`,
             data: {
@@ -60,6 +61,7 @@ export async function updateQuote(e, input, quote) {
 
     try {
         axios({
+            headers: {Authorization: authorizationHeader},
             method: 'put',
             url: `${process.env.REACT_APP_API_URL}/quote/${quote.quoteNumber}`,
             data: {

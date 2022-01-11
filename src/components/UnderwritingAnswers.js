@@ -10,6 +10,8 @@ const UnderwritingAnswers = ({underwritingData}) => {
         rented
     } = underwritingData;
 
+    const underwritingArray = Object.entries(underwritingData);
+
     return (
         <div>
             <div>UnderWritingAnswers</div>

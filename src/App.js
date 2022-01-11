@@ -1,6 +1,7 @@
 import './App.css';
 import {useState} from 'react';
 import {Form} from 'react-final-form'
+import arrayMutators from 'final-form-arrays'
 import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -23,39 +24,9 @@ function App() {
 
     const {loading} = useAuth0();
 
-    // function a11yProps(index) {
-    //     return {
-    //         id: `simple-tab-${index}`,
-    //         'aria-controls': `simple-tabpanel-${index}`,
-    //     };
-    // }
-    // function TabPanel(props) {
-    //     const {children, value, index, ...other} = props;
-    //
-    //     return (
-    //         <div
-    //             role="tabpanel"
-    //             hidden={value !== index}
-    //             id={`simple-tabpanel-${index}`}
-    //             aria-labelledby={`simple-tab-${index}`}
-    //             {...other}
-    //         >
-    //             {value === index && (
-    //                 <Box sx={{p: 3}}>
-    //                     <Typography component="div">{children}</Typography>
-    //                 </Box>
-    //             )}
-    //         </div>
-    //     );
-    // }
-
     const handleTabChange = (event, newTab) => {
         setTabValue(newTab)
     }
-
-    // const onSubmit = (values) => {
-    //     console.log(values);
-    // }
 
     return (
         <div className="App">
@@ -82,12 +53,13 @@ function App() {
                     {quoteValues ?
                         <Form
                             onSubmit={x => x}
-                            initialValues={quoteValues.quote}
+                            initialValues={quoteValues.input.categories}
+                            mutators={{...arrayMutators}}
                         >
-                            {({values, handleSubmit}) => (
+                            {({values, form: {mutators: {push, pop}}, handleSubmit}) => (
                                 <form>
                                     {/*<BillingSection billing={quoteValues.input.categories.billing} quote={quoteValues.input.categories.quote} />*/}
-                                    <QuoteSection quote={quoteValues.input.categories.quote} formValues={values}/>
+                                    <QuoteSection quote={quoteValues.input.categories.quote} formValues={values} mutators={{push, pop}} inputCategories={quoteValues.input.categories}/>
                                     <button
                                         onClick={(e) => updateQuote(e, quoteValues.input, values)}
                                     >Submit Form for Re-evaluation</button>
