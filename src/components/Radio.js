@@ -15,6 +15,7 @@ const Radio = ({label, name, type, radioList, defaultValue, schema}) => {
             <div>{label}</div>
             {radioList.map(item => {
                 return <Field
+                    key={item}
                     name={name}
                     type='radio'
                     value={item}
@@ -23,7 +24,9 @@ const Radio = ({label, name, type, radioList, defaultValue, schema}) => {
                             return Number(item)
                         } else if (schema.type === 'string') {
                             return item.toString();
-                        }
+                        } else if (schema.type === 'boolean') {
+                            return Boolean(item);
+                        } else return item.toString();
                     }}
                     component={Radio}
                     defaultValue={defaultValue}

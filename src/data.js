@@ -2,7 +2,7 @@ import axios from "axios";
 
 const trimWhiteSpace = value =>
     value ? value.replace(/\s+/g, ' ').trim() : value;
-const authorizationHeader = 'bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhuVmF3NzRVcVhTdHA5RkRRbHc0QWQtb2RFQkJJaFcxUVBBZUxuNzN4ekkifQ.eyJ1c2VybmFtZSI6ImFmM2JldGEiLCJraW5kIjoiYWNjZXNzX3Rva2VuIiwianRpIjoiNzNOZXo3ZFZGSkgtaC1xYktDVXlHIiwic3ViIjoiOTdXQnliSEpQRlV5QTJ5ajBXRS0iLCJpYXQiOjE2NDE4MjI2MDksImV4cCI6MTY0MTkwOTAwOSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImlzcyI6Imh0dHBzOi8vaWQudHJ5Y2MudGVjaC8iLCJhdWQiOiJJNExRcE1RQnhBdzdVLW0tVjh1UzUifQ.R_tllQDv56QzYc1VXLh88uPLo-DDvo1yLWVom3wSUyGKm51CAbPI9avUpS2kfP8SMEhj18walPvE3oyVBrRBGyGVM-4puJcY5rC2ljfb7KZgQrHmowOzw8fdPiMY5TtNUn4evsoo7XQhUxa_62FtKdDEckVQ2gN8Yg_qzhFf3NDpgXY3T2t-7azuyWzYkI69cZLKvdETyucZT23VWkfjBREWI3bAtvHpTILHomqbCTACFe3NCbBW9QkCCxIQIqxkQpRxNG5QlQ8AUpdjiFLX-OsAeWgW4OFyNWJHZ1CKZq8i4pNXeOKaTHFcTdzwbS88u7NsomtlbdiTKU51FEyq0w';
+const authorizationHeader = 'insert token here';
 
 export async function searchAddress({
                                         address,
@@ -33,7 +33,6 @@ export async function createQuote({
                                       propertyId,
                                       setLoadingData,
                                       setQuoteValues,
-                                      setTab
                                   }) {
     try {
         axios({
@@ -49,16 +48,81 @@ export async function createQuote({
         }).then(response => {
             setLoadingData(false);
             setQuoteValues(response.data.result);
-            setTab(1);
+            const result = response.data.result;
+            const inputsArray = [];
+
+            const {input} = result;
+
+            const categoryList = Object.keys(input.categories)
+            categoryList.forEach(categoryKey => {
+                const category = input.categories[categoryKey];
+                if (category.status === 'Ready') {
+                    const properties = Object.keys(category.properties);
+
+                    properties.forEach(property => {
+                        const propertySchema = category.properties[property].schema;
+
+                        if (propertySchema) {
+                            if (propertySchema.type === 'object') {
+                                //Add object schema type to inputsArray
+                                inputsArray.push({
+                                    path: `categories.${categoryKey}.properties.${property}`,
+                                    section: property,
+                                    dataType: propertySchema.type,
+                                    properties: propertySchema.properties,
+                                    value: category.properties[property].value,
+                                });
+                            } else if (propertySchema.type === 'array') {
+                                //Add Array schema type to inputsArray
+                                inputsArray.push({
+                                    path: `categories.${categoryKey}.properties.${property}`,
+                                    section: property,
+                                    dataType: propertySchema.type,
+                                    properties: propertySchema.items.properties,
+                                    value: category.properties[property].value
+                                });
+                            }
+                        } else {
+                            const categoryProperty = category.properties[property];
+                            let propertyKeys = Object.keys(categoryProperty);
+
+                            // Check to see if the properties have an order and sort them
+                            if (categoryProperty[propertyKeys[0]].order){
+                                propertyKeys = propertyKeys.sort((a,b) => categoryProperty[a].order - categoryProperty[b].order)
+                            }
+
+                            //Add object to inputList we've made it to the bottom
+                            propertyKeys.forEach(key => {
+                                const path = `categories.${categoryKey}.properties.${property}.${key}.value`
+                                const prop = categoryProperty[key];
+                                inputsArray.push({
+                                    path,
+                                    section: property,
+                                    name: prop.name,
+                                    displayText: prop.displayText || prop.question, //Use || question for underwritingAnswers, or create a new property for question
+                                    required: prop.required,
+                                    enum: prop.schema?.enum,
+                                    inputType: prop.schema?.type,
+                                    value: prop.value,
+                                    default: prop.default,
+                                    min: prop.schema?.min,
+                                    max: prop.schema?.max,
+                                })
+                            });
+                        }
+                    });
+                }
+            })
+            console.log(inputsArray);
+
         });
     } catch (error) {
         throw error;
     }
 };
 
-export async function updateQuote(e, input, quote) {
+export async function updateQuote(e, quote, input) {
     e.preventDefault();
-
     try {
         axios({
             headers: {Authorization: authorizationHeader},
@@ -69,7 +133,7 @@ export async function updateQuote(e, input, quote) {
                 input
             },
         }).then(response => {
-            console.log('response',response);
+            console.log('response', response);
             // setLoadingData(false);
             // setQuoteValues(response);
         });

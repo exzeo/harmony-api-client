@@ -10,7 +10,6 @@ import {AppBar} from "@material-ui/core";
 import {useAuth0} from "./context/auth-context";
 import Search from "./components/search";
 import QuoteSection from "./components/QuoteSection";
-import BillingSection from "./components/BillingSection";
 import UnauthenticatedApp from "./temp/UnauthenticatedApp";
 
 import { updateQuote } from "./data";
@@ -53,15 +52,15 @@ function App() {
                     {quoteValues ?
                         <Form
                             onSubmit={x => x}
-                            initialValues={quoteValues.input.categories}
+                            initialValues={quoteValues.input}
                             mutators={{...arrayMutators}}
                         >
-                            {({values, form: {mutators: {push, pop}}, handleSubmit}) => (
+                            {({values, form: {mutators: {push, pop, remove}}, handleSubmit}) => (
                                 <form>
-                                    {/*<BillingSection billing={quoteValues.input.categories.billing} quote={quoteValues.input.categories.quote} />*/}
-                                    <QuoteSection quote={quoteValues.input.categories.quote} formValues={values} mutators={{push, pop}} inputCategories={quoteValues.input.categories}/>
+                                    {/*rename quote section to something better*/}
+                                    <QuoteSection quote={quoteValues.input.categories.quote} formValues={values} mutators={{push, pop, remove}} inputCategories={quoteValues.input.categories}/>
                                     <button
-                                        onClick={(e) => updateQuote(e, quoteValues.input, values)}
+                                        onClick={(e) => updateQuote(e, quoteValues.quote, values)}
                                     >Submit Form for Re-evaluation</button>
                                 </form>
                             )

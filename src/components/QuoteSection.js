@@ -1,9 +1,11 @@
 import InputField from "./inputField";
+import ArraySchema from "./ArraySchema";
+import ObjectSchema from "./ObjectSchema";
 
 const QuoteSection = ({quote, formValues, mutators, inputCategories}) => {
 
     const categoryList = Object.keys(inputCategories);
-    console.log('formValues', formValues.quote)
+    console.log('formValues', formValues)
     return (
         <div>
             {categoryList.map(category => {
@@ -11,9 +13,14 @@ const QuoteSection = ({quote, formValues, mutators, inputCategories}) => {
                 if (identifier.status === 'Ready') {
                     const properties = Object.keys(identifier.properties);
                     return properties.map(property => {
-                        if (identifier.properties[property].schema) {
-                            // handle different schema types here like additional interests
-                            return
+                        const propertySchema = identifier.properties[property].schema
+                        if (propertySchema) {
+                            if (propertySchema.type === 'object') {
+                                //build object for array
+                                return <ObjectSchema property={identifier.properties[property]} propertyName={property} category={category}/>
+                            } else if (propertySchema.type === 'array') {
+                                return <ArraySchema property={identifier.properties[property]} propertyName={property} mutators={mutators} category={category}/>
+                            }
                         }
                         let inputProperty = identifier.properties[property];
                         let propertyKeys = Object.keys(inputProperty);
@@ -23,23 +30,24 @@ const QuoteSection = ({quote, formValues, mutators, inputCategories}) => {
                             propertyKeys = propertyKeys.sort((a, b) => inputProperty[a].order - inputProperty[b].order)
                         }
                         return propertyKeys.map(key => {
-                            let path = `${category}.properties.${property}.${key}.value`
-                            // need to build a path to this location for the form
+                            let path = `categories.${category}.properties.${property}.${key}.value`
                             const prop = inputProperty[key]
 
                             return (
-                                <InputField
-                                    name={path}
-                                    label={prop.displayText || prop.question}
-                                    component={'input'}
-                                    required={prop.required}
-                                    schema={prop.schema}
-                                />
+                                <div key={path}>
+                                    <InputField
+                                        name={path}
+                                        label={prop.displayText || prop.question}
+                                        component={'input'}
+                                        required={prop.required}
+                                        schema={prop.schema}
+                                    />
+                                </div>
+
                             );
                         });
                     })
-
-                }
+                } else {return null}
             })}
         </div>
     )
