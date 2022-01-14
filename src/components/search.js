@@ -11,7 +11,7 @@ import { Form } from 'react-final-form'
 import {createQuote, searchAddress} from "../data";
 import Box from "@material-ui/core/Box";
 
-const Search = ({searchResults, setSearchResults, setTab, setLoadingData, setQuoteValues}) => {
+const Search = ({searchResults, setSearchResults, setLoadingData, setQuoteValues, setInputValues}) => {
     const [searchText, setSearchText] = useState('');
     const [selectedState, setSelectedState] = useState('FL');
 
@@ -38,7 +38,7 @@ const Search = ({searchResults, setSearchResults, setTab, setLoadingData, setQuo
             propertyId: id,
             setLoadingData,
             setQuoteValues,
-            setTab,
+            setInputValues,
         })
     }
 

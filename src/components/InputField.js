@@ -3,19 +3,28 @@ import {Grid} from "@material-ui/core";
 import Radio from './Radio';
 
 const InputField = ({
-                        label,
                         name,
+                        label,
                         component,
                         type,
                         defaultValue,
                         placeholder = "",
                         schema,
+                        propertyEnum,
+                        min,
+                        max
                     }) => {
-    if (schema.enum) {
-        return <Radio label={label} name={name} radioList={schema.enum} defaultValue={schema.defaultValue} schema={schema}/>
+    if (propertyEnum) {
+        return <Radio
+            label={label}
+            name={name}
+            radioList={propertyEnum}
+            defaultValue={defaultValue}
+            schema={schema}
+        />
     }
     return (
-        <Grid item xs={6}>
+        <Grid item xs={6} key={label}>
             <label>{label}</label>
             <Field
                 name={name}
@@ -23,6 +32,8 @@ const InputField = ({
                 type={type}
                 placeholder={placeholder}
                 defaultValue={defaultValue}
+                min={min}
+                max={max}
             />
         </Grid>
     )

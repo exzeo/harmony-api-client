@@ -1,17 +1,18 @@
 import {Field} from "react-final-form";
 
-const ObjectSchema = ({ property, propertyName, category }) => {
-    const propertyValueKeys = Object.keys(property.value);
+const ObjectSchema = ({ value, path }) => {
+    const propertyValueKeys = Object.keys(value);
     return (
-        <div key={property}>
-            {propertyValueKeys.map(key => {
+        <div key={`${path}`}>
+            <div>{path}</div>
+            {propertyValueKeys.map((key, index) => {
                 return (
-                    <div key={key}>
+                    <div key={`${key} + ${index}`}>
                         <label>{key}</label>
                         <Field
-                            name={`categories.${category}.properties.${propertyName}.value[${key}]`}
+                            name={`${path}[${key}]`}
                             component={'input'}
-                            value={property.value[key]}
+                            value={value[key]}
                         />
                     </div>
                 )

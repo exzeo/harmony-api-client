@@ -11,28 +11,31 @@ const Radio = ({label, name, type, radioList, defaultValue, schema}) => {
     );
 
     return (
-        <Grid item xs={6}>
+        <Grid item xs={6} key={label}>
             <div>{label}</div>
-            {radioList.map(item => {
-                return <Field
-                    key={item}
-                    name={name}
-                    type='radio'
-                    value={item}
-                    parse={value => {
-                        if (schema.type === 'number') {
-                            return Number(item)
-                        } else if (schema.type === 'string') {
-                            return item.toString();
-                        } else if (schema.type === 'boolean') {
-                            return Boolean(item);
-                        } else return item.toString();
-                    }}
-                    component={Radio}
-                    defaultValue={defaultValue}
-                >
-                    {typeof item === 'boolean' ? String(item) : item}
-                </Field>
+            {radioList.map((item, index) => {
+                return (
+                    <div key={`${label} + ${name} + ${index}`}>
+                        <Field
+                            name={name}
+                            type='radio'
+                            value={item}
+                            parse={value => {
+                                if (schema.type === 'number') {
+                                    return Number(item)
+                                } else if (schema.type === 'string') {
+                                    return item.toString();
+                                } else if (schema.type === 'boolean') {
+                                    return Boolean(item);
+                                } else return item.toString();
+                            }}
+                            component={Radio}
+                            defaultValue={defaultValue}
+                        >
+                            {typeof item === 'boolean' ? String(item) : item}
+                        </Field>
+                    </div>
+                )
             })}
         </Grid>
     );

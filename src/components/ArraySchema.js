@@ -1,24 +1,22 @@
 import {Field} from 'react-final-form';
 import {FieldArray} from 'react-final-form-arrays'
 
-const ArraySchema = ({property, propertyName, mutators, category}) => {
+const ArraySchema = ({ mutators, properties, path, section }) => {
     const addFields = (e) => {
         e.preventDefault();
-        // create an object from the property values and pass instead of undefined
-        mutators.push(`categories.${category}.properties.${propertyName}.value`, undefined);
+        mutators.push(path, undefined);
     }
     const removeFields = (e, index) => {
         e.preventDefault();
-        mutators.remove(`categories.${category}.properties.${propertyName}.value`, index);
+        mutators.remove(path, index);
     }
-    const arrayProperties = property.schema.items.properties
-    const propertyListKeys = Object.keys(arrayProperties);
+    const propertyListKeys = Object.keys(properties);
 
     return (
-        <div key={propertyName}>
-            <div>{propertyName}</div>
-            <button onClick={(e) => addFields(e)}>Add {propertyName}</button>
-            <FieldArray name={`categories.${category}.properties.${propertyName}.value`}>
+        <div key={section}>
+            <div>{section}</div>
+            <button onClick={(e) => addFields(e)}>Add {section}</button>
+            <FieldArray name={path}>
                 {({fields}) => (
                     fields.map((name, index) => {
                         return (
@@ -28,15 +26,15 @@ const ArraySchema = ({property, propertyName, mutators, category}) => {
                                         <div key={key}>
                                             <label>{key}</label>
                                             <Field
-                                                name={`categories.${category}.properties.${propertyName}.value[${index}][${key}]`}
+                                                name={`${path}[${index}][${key}]`}
                                                 component='input'
-                                                type={arrayProperties[key].type}
+                                                type={properties[key].type}
                                             />
                                         </div>
                                     )
                                 })}
                                 <button type='button'
-                                        onClick={(e) => removeFields(e, index)}>Remove {propertyName}</button>
+                                        onClick={(e) => removeFields(e, index)}>Remove {section}</button>
                             </div>
                         )
                     })

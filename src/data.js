@@ -2,7 +2,7 @@ import axios from "axios";
 
 const trimWhiteSpace = value =>
     value ? value.replace(/\s+/g, ' ').trim() : value;
-const authorizationHeader = 'insert token here';
+const authorizationHeader = 'add auth token here';
 
 export async function searchAddress({
                                         address,
@@ -33,6 +33,7 @@ export async function createQuote({
                                       propertyId,
                                       setLoadingData,
                                       setQuoteValues,
+                                      setInputValues,
                                   }) {
     try {
         axios({
@@ -48,6 +49,7 @@ export async function createQuote({
         }).then(response => {
             setLoadingData(false);
             setQuoteValues(response.data.result);
+
             const result = response.data.result;
             const inputsArray = [];
 
@@ -67,6 +69,7 @@ export async function createQuote({
                                 //Add object schema type to inputsArray
                                 inputsArray.push({
                                     path: `categories.${categoryKey}.properties.${property}`,
+                                    category: categoryKey,
                                     section: property,
                                     dataType: propertySchema.type,
                                     properties: propertySchema.properties,
@@ -87,17 +90,21 @@ export async function createQuote({
                             let propertyKeys = Object.keys(categoryProperty);
 
                             // Check to see if the properties have an order and sort them
-                            if (categoryProperty[propertyKeys[0]].order){
-                                propertyKeys = propertyKeys.sort((a,b) => categoryProperty[a].order - categoryProperty[b].order)
+                            if (categoryProperty[propertyKeys[0]].order) {
+                                propertyKeys = propertyKeys.sort((a, b) => categoryProperty[a].order - categoryProperty[b].order)
+                            }
+
+                            const inputSection = {
+                                section: property,
+                                properties: [],
                             }
 
                             //Add object to inputList we've made it to the bottom
                             propertyKeys.forEach(key => {
                                 const path = `categories.${categoryKey}.properties.${property}.${key}.value`
                                 const prop = categoryProperty[key];
-                                inputsArray.push({
+                                const inputProperties = {
                                     path,
-                                    section: property,
                                     name: prop.name,
                                     displayText: prop.displayText || prop.question, //Use || question for underwritingAnswers, or create a new property for question
                                     required: prop.required,
@@ -107,14 +114,15 @@ export async function createQuote({
                                     default: prop.default,
                                     min: prop.schema?.min,
                                     max: prop.schema?.max,
-                                })
+                                }
+                                inputSection.properties.push(inputProperties);
                             });
+                            inputsArray.push(inputSection);
                         }
                     });
                 }
             })
-            console.log(inputsArray);
-
+            setInputValues(inputsArray);
         });
     } catch (error) {
         throw error;

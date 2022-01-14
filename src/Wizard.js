@@ -33,7 +33,6 @@ export const Wizard = ({ onSubmit, initialValues, children }) => {
             field: 'coverageLimits.dwelling.value.integer',
             updates: {
                 'coverageLimits.lossOfUse.value.integer' : (dwellingValue, allValues) => {
-                    console.log('in calculator after save', console.log(dwellingValue), console.log(allValues));
                 return ((dwellingValue * allValues.coverageLimits.lossOfUse.schema.default) / 100)
                 }
             }
@@ -66,7 +65,6 @@ export const Wizard = ({ onSubmit, initialValues, children }) => {
             >
                 {({ handleSubmit, submitting, values }) => (
                     <form onSubmit={handleSubmit}>
-                        {console.log('formValues', values)}
                         {children[page]}
                         <div className="buttons">
                             {page > 0 && (
