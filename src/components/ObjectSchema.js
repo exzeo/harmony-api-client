@@ -1,10 +1,10 @@
 import {Field} from "react-final-form";
 
-const ObjectSchema = ({ value, path }) => {
+const ObjectSchema = ({ value, path, section }) => {
     const propertyValueKeys = Object.keys(value);
     return (
         <div key={`${path}`}>
-            <div>{path}</div>
+            <div>{section}</div>
             {propertyValueKeys.map((key, index) => {
                 return (
                     <div key={`${key} + ${index}`}>

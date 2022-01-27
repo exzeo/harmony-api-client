@@ -18,6 +18,7 @@ const InputField = ({
         return <Radio
             label={label}
             name={name}
+            type={type}
             radioList={propertyEnum}
             defaultValue={defaultValue}
             schema={schema}

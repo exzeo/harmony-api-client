@@ -1,7 +1,7 @@
 import {Field} from "react-final-form";
 import Grid from "@material-ui/core/Grid";
 
-const Radio = ({label, name, type, radioList, defaultValue, schema}) => {
+const Radio = ({label, name, type, radioList, defaultValue}) => {
 
     const Radio = ({input, children}) => (
         <label>
@@ -9,7 +9,6 @@ const Radio = ({label, name, type, radioList, defaultValue, schema}) => {
             {children}
         </label>
     );
-
     return (
         <Grid item xs={6} key={label}>
             <div>{label}</div>
@@ -21,11 +20,11 @@ const Radio = ({label, name, type, radioList, defaultValue, schema}) => {
                             type='radio'
                             value={item}
                             parse={value => {
-                                if (schema.type === 'number') {
+                                if (type === 'number') {
                                     return Number(item)
-                                } else if (schema.type === 'string') {
+                                } else if (type === 'string') {
                                     return item.toString();
-                                } else if (schema.type === 'boolean') {
+                                } else if (type === 'boolean') {
                                     return Boolean(item);
                                 } else return item.toString();
                             }}

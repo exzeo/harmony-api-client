@@ -87,7 +87,7 @@ function App() {
                                                                         requierd={property.required}
                                                                         component='input'
                                                                         propertyEnum={property.enum}
-                                                                        schema={property.schema}
+                                                                        type={property.inputType}
                                                                         defaultValue={property.defaultValue}
                                                                     />
                                                             </div>

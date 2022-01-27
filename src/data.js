@@ -87,11 +87,11 @@ export async function createQuote({
                             }
                         } else {
                             const categoryProperty = category.properties[property];
-                            let propertyKeys = Object.keys(categoryProperty);
+                            let propertyKeys = Object.keys(categoryProperty.properties);
 
                             // Check to see if the properties have an order and sort them
-                            if (categoryProperty[propertyKeys[0]].order) {
-                                propertyKeys = propertyKeys.sort((a, b) => categoryProperty[a].order - categoryProperty[b].order)
+                            if (categoryProperty.properties[propertyKeys[0]].order) {
+                                propertyKeys = propertyKeys.sort((a, b) => categoryProperty.properties[a].order - categoryProperty.properties[b].order)
                             }
 
                             const inputSection = {
@@ -101,8 +101,8 @@ export async function createQuote({
 
                             //Add object to inputList we've made it to the bottom
                             propertyKeys.forEach(key => {
-                                const path = `categories.${categoryKey}.properties.${property}.${key}.value`
-                                const prop = categoryProperty[key];
+                                const path = `categories.${categoryKey}.properties.${property}.properties.${key}.value`
+                                const prop = categoryProperty.properties[key];
                                 const inputProperties = {
                                     path,
                                     name: prop.name,
