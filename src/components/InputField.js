@@ -9,7 +9,6 @@ const InputField = ({
                         type,
                         defaultValue,
                         placeholder = "",
-                        schema,
                         propertyEnum,
                         min,
                         max
@@ -21,7 +20,6 @@ const InputField = ({
             type={type}
             radioList={propertyEnum}
             defaultValue={defaultValue}
-            schema={schema}
         />
     }
     return (

@@ -13,6 +13,7 @@ import UnauthenticatedApp from "./temp/UnauthenticatedApp";
 import {updateQuote} from "./data";
 import ObjectSchema from "./components/ObjectSchema";
 import ArraySchema from "./components/ArraySchema";
+import BillingSchema from "./components/BillingSchema";
 import InputField from "./components/InputField";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
     const [loadingQuote, setLoadingQuote] = useState();
     const [quoteValues, setQuoteValues] = useState();
     const [inputValues, setInputValues] = useState([]);
+    const [inputsByCategory, setInputsByCategory] = useState([]);
 
     const {loading} = useAuth0();
 
@@ -42,7 +44,8 @@ function App() {
                     <h3>Property Search</h3>
                     <Search searchResults={searchResults} setSearchResults={setSearchResults}
                             setLoadingData={setLoadingQuote} setQuoteValues={setQuoteValues}
-                            setInputValues={setInputValues}/>
+                            setInputValues={setInputValues}
+                            setInputsByCategory={setInputsByCategory}/>
 
                     {loadingQuote && <div>Loading Quote</div>}
                     {quoteValues ?
@@ -74,8 +77,16 @@ function App() {
                                                         />
                                                     </div>
                                                 );
-                                            }
-                                            else {
+                                            } else if (input.dataType === 'oneOf') {
+
+                                                return (
+                                                    <div key={input.path}>
+                                                        {/*Additional Interests and policy holders need billToId passed back, update schema to show oneOfList*/}
+                                                        {/*Only display the billPlan of the option that is selected*/}
+                                                        <BillingSchema schema={input.schema} section={input.section} value={input.value} path={input.path}/>
+                                                    </div>
+                                                )
+                                            } else {
                                                 return (
                                                     <div key={input.section + index}>
                                                         <div>{input.section}</div>
@@ -101,7 +112,7 @@ function App() {
                                     }
 
                                     <button
-                                        onClick={(e) => updateQuote(e, quoteValues.quote, values)}
+                                        onClick={(e) => updateQuote(e, quoteValues.quote, values, setQuoteValues, setInputValues)}
                                     >Submit Form for Re-evaluation
                                     </button>
                                 </form>
