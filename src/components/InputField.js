@@ -23,7 +23,7 @@ const InputField = ({
         />
     }
     return (
-        <Grid item xs={6} key={label}>
+        <Grid item xs={12} key={label}>
             <label>{label}</label>
             <Field
                 name={name}
