@@ -7,18 +7,13 @@ import { Card, CardActionArea, FormControl } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Form } from 'react-final-form';
+import { useQuoteManager } from '../hooks/useQuoteManager';
 
-import { createQuote, searchAddress } from '../data';
+import { createQuote } from '../data';
 import Box from '@material-ui/core/Box';
 
-const Search = ({
-  searchResults,
-  setSearchResults,
-  setLoadingData,
-  setQuoteValues,
-  setInputValues,
-  setInputValues2,
-}) => {
+const Search = () => {
+  const { searchResults, searchAddress } = useQuoteManager();
   const [searchText, setSearchText] = useState('');
   const [selectedState, setSelectedState] = useState('FL');
 
@@ -28,10 +23,7 @@ const Search = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    searchAddress(
-      { address: searchText, state: selectedState },
-      setSearchResults
-    );
+    searchAddress({ address: searchText, state: selectedState });
   };
 
   const handleTextChange = (e) => {

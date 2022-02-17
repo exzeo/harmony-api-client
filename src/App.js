@@ -15,6 +15,7 @@ import ObjectSchema from './components/ObjectSchema';
 import ArraySchema from './components/ArraySchema';
 import BillingSchema from './components/BillingSchema';
 import InputSelect from './components/Select';
+import { useQuoteManager } from './hooks/useQuoteManager';
 
 function App() {
   const [searchResults, setSearchResults] = useState();
@@ -25,10 +26,11 @@ function App() {
 
   const [inputValues2, setInputValues2] = useState();
 
-  const { loading } = useAuth0();
+  const { loading: authLoading } = useAuth0();
+
+  const { loading } = useQuoteManager();
 
   const handleSubmit = async (e, values) => {
-    console.log(values);
     e.preventDefault();
 
     await updateQuote(
