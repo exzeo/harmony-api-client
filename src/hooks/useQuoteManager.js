@@ -8,7 +8,7 @@ export function useQuoteManager() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const [searchResults, setSearchResults] = useState();
-  const [response, setResponse] = useState();
+  const [quoteResult, setQuoteResult] = useState();
 
   async function createQuote({ companyCode, state, product, propertyId }) {
     setLoading(true);
@@ -24,8 +24,8 @@ export function useQuoteManager() {
           propertyId,
         },
       });
-      setResponse(response.data.result);
-      setSearchResults([]);
+      setQuoteResult(response.data.result);
+      setSearchResults(undefined);
     } catch (error) {
       setError(error);
     } finally {
@@ -36,6 +36,8 @@ export function useQuoteManager() {
   async function updateQuote({ quote, input }) {
     setLoading(true);
     try {
+      formatForSubmit(input);
+
       const response = await axios({
         headers: { Authorization: authorizationHeader },
         method: 'put',
@@ -45,7 +47,7 @@ export function useQuoteManager() {
           input,
         },
       });
-      setResponse(response.data.result);
+      setQuoteResult(response.data.result);
     } catch (error) {
       setError(error);
     } finally {
@@ -91,7 +93,7 @@ export function useQuoteManager() {
           input,
         },
       });
-      setResponse(response.data.result);
+      setQuoteResult(response.data.result);
     } catch (error) {
       setError(error);
     } finally {
@@ -106,6 +108,15 @@ export function useQuoteManager() {
     loading,
     error,
     searchResults,
-    response,
+    quoteResult,
   };
+}
+
+function formatForSubmit(doc) {
+  doc.categories.quote.properties.policyHolders.value =
+    doc.categories.quote.properties.policyHolders.value.map((p, i) => ({
+      ...p,
+      order: i,
+      ...(i === 0 && { electronicDelivery: false }),
+    }));
 }
