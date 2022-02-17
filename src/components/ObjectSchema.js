@@ -1,27 +1,46 @@
 import { Field } from 'react-final-form';
+import Grid from '@material-ui/core/Grid';
 
-const ObjectSchema = ({ value, path, section, inputList }) => {
+const ObjectSchema = ({ value, path, section }) => {
   const propertyValueKeys = Object.keys(value);
   return (
-    <div key={`${path}`}>
+    <Grid container justifyContent={'center'} key={`${path}`}>
       <div>{section}</div>
       {propertyValueKeys.map((key, index) => {
         if (key === 'country') {
           return (
-            <div>
-              <label>{key}</label>
-              <Field name={`${path}.${key}.code`} component={'input'} />
-            </div>
+            <Grid
+              container
+              item
+              key={`${key} + ${index}`}
+              justifyContent={'center'}
+            >
+              <Grid item xs={3}>
+                <label>{key}</label>
+              </Grid>
+              <Grid item xs={3}>
+                <Field name={`${path}.${key}.code`} component={'input'} />
+              </Grid>
+            </Grid>
           );
         } else
           return (
-            <div key={`${key} + ${index}`}>
-              <label>{key}</label>
-              <Field name={`${path}[${key}]`} component={'input'} />
-            </div>
+            <Grid
+              container
+              item
+              key={`${key} + ${index}`}
+              justifyContent={'center'}
+            >
+              <Grid item xs={3}>
+                <label>{key}</label>
+              </Grid>
+              <Grid item xs={3}>
+                <Field name={`${path}[${key}]`} component={'input'} />
+              </Grid>
+            </Grid>
           );
       })}
-    </div>
+    </Grid>
   );
 };
 

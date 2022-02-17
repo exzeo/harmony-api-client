@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { Fragment, useState, useMemo } from 'react';
 import { Form, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
@@ -9,15 +9,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
 
-import { useAuth0 } from './context/auth-context';
-import UnauthenticatedApp from './temp/UnauthenticatedApp';
+// import { useAuth0 } from './context/auth-context';
+// import UnauthenticatedApp from './temp/UnauthenticatedApp';
 
 import { useQuoteManager } from './hooks/useQuoteManager';
 import Search from './components/Search';
 import ObjectSchema from './components/ObjectSchema';
 import ArraySchema from './components/ArraySchema';
 import InputSelect from './components/Select';
-import BillingSchema from './components/BillingSchema';
+// import BillingSchema from './components/BillingSchema';
 
 import { parseInputData } from './utilities';
 
@@ -86,19 +86,13 @@ function App() {
           </>
         )}
 
-        {view === 'quote' && (
+        {input && (
           <Form
             onSubmit={submitQuote}
             initialValues={input}
             mutators={{ ...arrayMutators }}
           >
-            {({
-              form: {
-                mutators: { push, pop, remove },
-              },
-              values,
-              handleSubmit,
-            }) => (
+            {({ form, values, handleSubmit }) => (
               <>
                 <form
                   id="quote-form"
@@ -135,6 +129,7 @@ function App() {
                             } else if (input.inputHint === 'textbox') {
                               return (
                                 <Field
+                                  key={input.path}
                                   name={input.path}
                                   type={
                                     input.type === 'string' ? 'text' : 'number'
@@ -145,7 +140,7 @@ function App() {
                             } else if (input.inputHint === 'array') {
                               return (
                                 <ArraySchema
-                                  mutators={{ push, pop, remove }}
+                                  formApi={form}
                                   inputList={input.inputList}
                                   path={input.path}
                                   title={input.title}
@@ -164,10 +159,10 @@ function App() {
                               );
                             } else if (input.inputHint === 'billing') {
                               return (
-                                <div>
+                                <div key="billing">
                                   {input.options.map((option) => {
                                     return (
-                                      <>
+                                      <Fragment>
                                         <Field
                                           name={
                                             'categories.billing.properties.billing.value.billToId'
@@ -224,16 +219,22 @@ function App() {
                                             </Field>
                                           </div>
                                         ) : null}
-                                      </>
+                                      </Fragment>
                                     );
                                   })}
                                 </div>
                               );
                             }
+                            return null;
                           })}
                         </Grid>
                       </div>
                     ))}
+                  {/*TODO FIX STYLING SO IT LOOKS NICE*/}
+                  {/*TODO SHOW underwriting Exceptions*/}
+                  {/*TODO DEAL WITH NUMBERS AND BOOLEANS*/}
+                  {/*TODO SHOW SUCCESS ONCE SEND TO DOCUSIGN*/}
+                  {/*TODO HANDLE ERRORS*/}
                   <button type="submit" form="quote-form">
                     Submit Form for Re-evaluation
                   </button>

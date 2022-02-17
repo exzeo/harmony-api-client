@@ -5,12 +5,12 @@ const InputSelect = ({ title, path, options, defaultValue, values }) => {
   if (path.includes('underwritingAnswers')) {
     return (
       <Grid container item xs={12} justifyContent={'center'}>
-        <div style={{ 'margin-bottom': '30px' }}>
+        <div style={{ marginBottom: '30px' }}>
           <div
             style={{
               margin: '8px',
-              'margin-bottom': '8px',
-              'font-size': '18px',
+              marginBottom: '8px',
+              fontSize: '18px',
             }}
           >
             {title}
@@ -21,14 +21,14 @@ const InputSelect = ({ title, path, options, defaultValue, values }) => {
                 <Grid container spacing={2}>
                   {options.map((option) => {
                     return (
-                      <Grid item xs={6} justifyContent={'center'}>
+                      <Grid item xs={6} key={option.value}>
                         <Paper
                           onClick={() => input.onChange(option.value)}
                           style={{
                             margin: '8px',
                             padding: '8px',
-                            'max-width': '200px',
-                            'font-size': '16px',
+                            maxWidth: '200px',
+                            fontSize: '16px',
                             background:
                               option.value === input.value ? 'cornsilk' : '',
                           }}
@@ -47,14 +47,14 @@ const InputSelect = ({ title, path, options, defaultValue, values }) => {
     );
   } else
     return (
-      <Grid container item xs={6} style={{ 'margin-bottom': '30px' }}>
+      <Grid container item xs={6} style={{ marginBottom: '30px' }}>
         <Grid container item xs={12} justifyContent={'space-around'}>
           <Grid item xs={6}>
             <div
               style={{
                 margin: '8px',
-                'margin-bottom': '8px',
-                'font-size': '18px',
+                marginBottom: '8px',
+                fontSize: '18px',
               }}
             >
               {title}
@@ -64,8 +64,8 @@ const InputSelect = ({ title, path, options, defaultValue, values }) => {
             <Field name={path}>
               {({ input, meta }) => {
                 return (
-                  <select {...input} defaultValue={defaultValue}>
-                    {!defaultValue && <option></option>}
+                  <select {...input}>
+                    <option value={''}></option>
                     {options.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}

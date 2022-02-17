@@ -85,7 +85,7 @@ export function useQuoteManager() {
   async function sendApplication(quoteNumber) {
     setLoading(true);
     try {
-      const response = await axios({
+      await axios({
         headers: { Authorization: authorizationHeader },
         method: 'post',
         url: `${process.env.REACT_APP_API_URL}/sendApplication`,
