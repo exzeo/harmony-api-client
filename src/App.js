@@ -32,6 +32,7 @@ function App() {
     loading,
     searchAddress,
     searchResults,
+    sendApplication,
     createQuote,
     quoteResult = {},
     updateQuote,
@@ -237,7 +238,13 @@ function App() {
                     Submit Form for Re-evaluation
                   </button>
                 </form>
-
+                <button
+                  type="button"
+                  disabled={quote?.underwritingexceptions?.length > 0}
+                  onClick={() => sendApplication(quote.quoteNumber)}
+                >
+                  Send Application
+                </button>
                 <div style={{ paddingTop: '30px', paddingBottom: '30px' }}>
                   Form Values
                 </div>

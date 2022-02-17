@@ -9,6 +9,7 @@ export function useQuoteManager() {
   const [error, setError] = useState();
   const [searchResults, setSearchResults] = useState();
   const [quoteResult, setQuoteResult] = useState();
+  const [applicationSuccess, setApplicationSuccess] = useState();
 
   async function createQuote({ companyCode, state, product, propertyId }) {
     setLoading(true);
@@ -81,19 +82,19 @@ export function useQuoteManager() {
     }
   }
 
-  async function sendApplication({ quote, input }) {
+  async function sendApplication(quoteNumber) {
     setLoading(true);
     try {
       const response = await axios({
         headers: { Authorization: authorizationHeader },
-        method: 'put',
-        url: `${process.env.REACT_APP_API_URL}/quote/${quote.quoteNumber}`,
+        method: 'post',
+        url: `${process.env.REACT_APP_API_URL}/sendApplication`,
         data: {
-          quote,
-          input,
+          quoteNumber,
+          sendType: 'docusign',
         },
       });
-      setQuoteResult(response.data.result);
+      setApplicationSuccess(true);
     } catch (error) {
       setError(error);
     } finally {
@@ -105,10 +106,12 @@ export function useQuoteManager() {
     createQuote,
     updateQuote,
     searchAddress,
+    sendApplication,
     loading,
     error,
     searchResults,
     quoteResult,
+    applicationSuccess,
   };
 }
 
