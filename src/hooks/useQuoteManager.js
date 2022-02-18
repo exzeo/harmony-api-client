@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 const authorizationHeader =
-  'bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhuVmF3NzRVcVhTdHA5RkRRbHc0QWQtb2RFQkJJaFcxUVBBZUxuNzN4ekkifQ.eyJ1c2VybmFtZSI6ImFmM2JldGEiLCJraW5kIjoiYWNjZXNzX3Rva2VuIiwianRpIjoiVURBZHpuREtwWUZWdmtNRkdjNXBRIiwic3ViIjoiOTdXQnliSEpQRlV5QTJ5ajBXRS0iLCJpYXQiOjE2NDUwNTkzOTMsImV4cCI6MTY0NTE0NTc5Mywic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImlzcyI6Imh0dHBzOi8vaWQudHJ5Y2MudGVjaC8iLCJhdWQiOiJJNExRcE1RQnhBdzdVLW0tVjh1UzUifQ.melJbdUtO0gS_hkB1Fha-P2GY3j7w2wheveidq1-de9U_TNau-sEHHhy-5PsfZ9HotWYU3e2FBCTVfrRlYM2eaA00mXavdzYXyzyMe-5Q8C8kZupwLjwJ65GWnL5nagL0s0Gs4CLeNakMABXCfRnl6qYcR8Gg9ciugSByMdVN1BMje87jMtjfz_lReeBeJPLqJebMrfGCdU4Iax5sWlqsuvMykuD52c9f1xYrXEMXyTjVIYQ6GI4_5vRHLpURxnHuc_-_W3FVMh68-9OYkrmiLFduh3nRW1kc0rx4PvgwH6S1tDQWZckaGD-GUY4hv4LmdQ7qszq83WQbeW017KVLQ';
+  'bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhuVmF3NzRVcVhTdHA5RkRRbHc0QWQtb2RFQkJJaFcxUVBBZUxuNzN4ekkifQ.eyJ1c2VybmFtZSI6ImFmM2JldGEiLCJraW5kIjoiYWNjZXNzX3Rva2VuIiwianRpIjoiSGZTbHZnamJjektDNmFNbUp6LWdiIiwic3ViIjoiOTdXQnliSEpQRlV5QTJ5ajBXRS0iLCJpYXQiOjE2NDUxNDYwODksImV4cCI6MTY0NTIzMjQ4OSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImlzcyI6Imh0dHBzOi8vaWQudHJ5Y2MudGVjaC8iLCJhdWQiOiJJNExRcE1RQnhBdzdVLW0tVjh1UzUifQ.D22juVo56IDXYJlLciRkec76pb1LqWUyhELQAb_d6H5y2_Wr_TcAoZWYFXI3BTSWUB5-NmVTeMQvvFvzMA_vjytl-zRh-8V11qr1UpjpHwdTSRqup80pzmP73EllqC6tMy305dDuvZ2qu3aSdW4uPVkAV-4APZ1_K_C4l-b8ttKrbFCcugVwQc7Gxzowm-CClsuraUN_18EWKyyN807HS1LfdR8oaoxzWVAM76o9Ygu5A_PTF9nqHnNjudFHa0z4W7vpkT5bW4pmy0QaWRVO5ptQMG9plVZ-DiILrBWVOuYxWGJJ1R7vg3wSXsdQCzOvheVHiiOdF6fTr-yngCzaLw';
 
 export function useQuoteManager() {
   const [loading, setLoading] = useState(false);
@@ -102,11 +102,19 @@ export function useQuoteManager() {
     }
   }
 
+  function resetQuoteState() {
+    setError(undefined);
+    setSearchResults(undefined);
+    setQuoteResult(undefined);
+    setApplicationSuccess(undefined);
+  }
+
   return {
     createQuote,
     updateQuote,
     searchAddress,
     sendApplication,
+    resetQuoteState,
     loading,
     error,
     searchResults,

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Field, useField } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
-import { Divider, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 const ArraySchema = ({ formApi, inputList, path, title }) => {
   const { mutators } = formApi;
@@ -47,7 +47,17 @@ const ArraySchema = ({ formApi, inputList, path, title }) => {
                     }
                     return (
                       <Grid item xs={12} key={name}>
-                        {index > 0 && <Divider />}
+                        {index > 0 && (
+                          <hr
+                            style={{
+                              border: 'solid 2px grey',
+                              borderRadius: '2px',
+                              width: '400px',
+                              color: '#ffff00',
+                              marginBottom: '24px',
+                            }}
+                          ></hr>
+                        )}
                         {inputList.map((input) => {
                           return (
                             <Grid container item xs={12} key={input.name}>

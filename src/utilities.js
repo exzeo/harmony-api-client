@@ -175,7 +175,6 @@ export function parseInputData(input) {
           const subSectionProperty =
             subSection.properties[subSectionPropertyKey]; // business
 
-          // TODO need to account for billing section separately
           if (subSectionProperty.schema) {
             section.inputs.push(
               buildInput(
