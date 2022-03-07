@@ -231,3 +231,78 @@ export function parseInputData(input) {
 
   return sections;
 }
+
+// TODO - reworking parseInputData
+// function getProperties({ sections, properties, path = '' }) {
+//   for (const k in properties) {
+//     const property = properties[k];
+//     sections[k] = {};
+//
+//     // schema property indicates end of path
+//     const schema = getSchema({ schema: property.schema });
+//
+//     let config;
+//     if (schema) {
+//       config = {
+//         title: property.displayText || property.question || property.name || k,
+//         path: property.schema ? (path + `.${k}.value`) : (path + `.${k}`),
+//         ...schema
+//       }
+//     } else {
+//       config = { type: property.type}
+//     }
+//
+//     sections[k] = ({
+//       ...config
+//     })
+//
+//     if (property.properties) {
+//       sections[k] = {}
+//       const newPath = path + `.${k}.properties`
+//       getProperties({
+//         sections: sections[k],
+//         properties: property.properties,
+//         path: newPath
+//       })
+//     }
+//   }
+// }
+//
+// function getSchema({ schema }) {
+//   if (!schema) {
+//     return
+//   }
+//
+//   const { enum: options, type } = schema
+//
+//   if (type === 'array') {
+//     // move logic to sep func
+//     const formatted = [];
+//     const arrayProperties = schema.items.properties
+//     // TODO possible to use getProperties here instead?
+//     for (const key in arrayProperties) {
+//       if (arrayProperties[key].type === 'object') {
+//         Object.entries(arrayProperties[key].properties).forEach(([subKey, value]) => {
+//           formatted.push({[`${key}.${subKey}`]: value})
+//         })
+//       } else {
+//         formatted.push({[key]: arrayProperties[key]})
+//       }
+//     }
+//
+//     return { type, items: formatted }
+//   }
+//
+//   if (type === 'object') {
+//     //TODO
+//   }
+//
+//
+//   return {
+//     type: type || options && 'enum',
+//     ...(options && { options: options.map(value => ({ value })) })
+//   }
+//
+// }
+//
+// const result = getQuoteFields(quote)
