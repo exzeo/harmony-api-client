@@ -1,5 +1,5 @@
 function determineType(schema) {
-  if (schema.enum) {
+  if (schema.enum || schema.oneOf) {
     return 'select';
   } else if (schema === 'billing') {
     return 'billing';
@@ -25,6 +25,13 @@ function getOptions({ format, schema }) {
         label: `$${e.toLocaleString('en', { minimumFractionDigits: 2 })}`,
       }));
     }
+  } else if (schema.oneOf) {
+    return schema.oneOf.map((item) => {
+      return {
+        value: item.const,
+        label: item.title,
+      };
+    });
   }
   return undefined;
 }
@@ -148,7 +155,8 @@ function buildInput(
     inputHint: determineType(subSectionProperty.schema),
     type: subSectionProperty.schema.type,
     options: getOptions(subSectionProperty),
-    default: getDefault(subSectionProperty.schema.default),
+    default:
+      getDefault(subSectionProperty.schema.default) || subSectionProperty.value,
   };
 }
 
