@@ -1,14 +1,34 @@
 import axios from 'axios';
 import { useState } from 'react';
 
-const AUTH_TOKEN = `bearer ${process.env.REACT_APP_API_TOKEN}`;
-
 export function useQuoteManager() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const [searchResults, setSearchResults] = useState();
   const [quoteResult, setQuoteResult] = useState();
   const [applicationSuccess, setApplicationSuccess] = useState();
+  const [token, setToken] = useState();
+
+  async function getToken() {
+    try {
+      const { REACT_APP_CLIENT_ID, REACT_APP_CLIENT_SECRET } = process.env;
+
+      const response = await axios({
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded',
+          client_id: process.env.REACT_APP_CLIENT_ID,
+          client_secret: process.env.REACT_APP_CLIENT_SECRET,
+          grant_type: 'client_credentials',
+        },
+        method: 'POST',
+        data: `client_id=${REACT_APP_CLIENT_ID}&client_secret=${REACT_APP_CLIENT_SECRET}&grant_type=client_credentials`,
+        url: 'https://id.trycc.tech/oidc/token',
+      });
+      setToken(response.data.access_token);
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async function searchAddress(query) {
     const {
@@ -20,7 +40,7 @@ export function useQuoteManager() {
     try {
       const cleanAddress = address.trim();
       const response = await axios({
-        headers: { Authorization: AUTH_TOKEN },
+        headers: { apiKey: token },
         method: 'get',
         url: `${process.env.REACT_APP_API_URL}/property?searchText=${cleanAddress}&state=${state}`,
       });
@@ -39,7 +59,7 @@ export function useQuoteManager() {
     setLoading(true);
     try {
       const response = await axios({
-        headers: { Authorization: AUTH_TOKEN },
+        headers: { apiKey: token },
         method: 'post',
         url: `${process.env.REACT_APP_API_URL}/quote`,
         data: {
@@ -65,7 +85,7 @@ export function useQuoteManager() {
       formatForSubmit(input);
 
       const response = await axios({
-        headers: { Authorization: AUTH_TOKEN },
+        headers: { apiKey: token },
         method: 'put',
         url: `${process.env.REACT_APP_API_URL}/quote/${quote.quoteNumber}`,
         data: {
@@ -85,7 +105,7 @@ export function useQuoteManager() {
     setLoading(true);
     try {
       const response = await axios({
-        headers: { Authorization: AUTH_TOKEN },
+        headers: { apiKey: token },
         method: 'get',
         url: `${process.env.REACT_APP_API_URL}/quote/${quoteNumber}`,
       });
@@ -102,7 +122,7 @@ export function useQuoteManager() {
     setLoading(true);
     try {
       await axios({
-        headers: { Authorization: AUTH_TOKEN },
+        headers: { apiKey: token },
         method: 'post',
         url: `${process.env.REACT_APP_API_URL}/sendApplication`,
         data: {
@@ -137,6 +157,7 @@ export function useQuoteManager() {
     sendApplication,
     resetQuoteState,
     resetSearchResults,
+    getToken,
     loading,
     error,
     searchResults,

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AppBar from '@material-ui/core/AppBar';
@@ -26,8 +26,13 @@ function App() {
     applicationSuccess,
     resetQuoteState,
     resetSearchResults,
+    getToken,
   } = useQuoteManager();
   const { quote, input } = quoteResult;
+
+  useEffect(() => {
+    getToken();
+  }, []);
 
   async function startQuote(values) {
     await createQuote(values);
