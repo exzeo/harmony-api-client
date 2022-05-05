@@ -232,77 +232,57 @@ export function parseInputData(input) {
   return sections;
 }
 
-// TODO - reworking parseInputData
-// function getProperties({ sections, properties, path = '' }) {
-//   for (const k in properties) {
-//     const property = properties[k];
-//     sections[k] = {};
-//
-//     // schema property indicates end of path
-//     const schema = getSchema({ schema: property.schema });
-//
-//     let config;
-//     if (schema) {
-//       config = {
-//         title: property.displayText || property.question || property.name || k,
-//         path: property.schema ? (path + `.${k}.value`) : (path + `.${k}`),
-//         ...schema
-//       }
-//     } else {
-//       config = { type: property.type}
+// TODO - Reworking parseInput data - still need to fix 'path' property
+// // create a new object (or nested object) when we encounter a 'properties' key
+// function formatProperties(properties, parentPath) {
+//   const sections = {}
+//   for (const [key, property] of Object.entries(properties)) {
+//     const { path, ...rest } = formatProperty([key, property])
+//     sections[key] = {
+//       ...(path && { path: `${parentPath}.properties.${key}.${path}`}),
+//       ...rest
 //     }
+//   }
+//   return sections;
+// }
 //
-//     sections[k] = ({
-//       ...config
-//     })
-//
-//     if (property.properties) {
-//       sections[k] = {}
-//       const newPath = path + `.${k}.properties`
-//       getProperties({
-//         sections: sections[k],
-//         properties: property.properties,
-//         path: newPath
-//       })
+// // TODO think of a better name; this func processes an object to determine what the next processing step should be
+// function formatProperty([key, property]) {
+//   // 'schema' indicates end of quote path (which means a UI input).
+//   if (property.schema) {
+//     return {
+//       title: property.displayText || property.question || property.name || key,
+//       path: `value`,
+//       type: property.type,
+//       ...formatSchema(property.schema)
 //     }
+//   } else if (property.properties) {
+//     // create a new subproperty object
+//     const { path, ...rest} = formatProperties(property.properties, key);
+//     return {
+//       path: `properties.${path}`,
+//       ...rest
+//     }
+//   }  else {
+//     // else process as a leaf node not associated with a path
+//     return { path : null, ...property }
 //   }
 // }
 //
-// function getSchema({ schema }) {
-//   if (!schema) {
-//     return
-//   }
-//
-//   const { enum: options, type } = schema
+// // process 'schema' object
+// function formatSchema(schema) {
+//   const { type, enum: options, items, properties } = schema
 //
 //   if (type === 'array') {
-//     // move logic to sep func
-//     const formatted = [];
-//     const arrayProperties = schema.items.properties
-//     // TODO possible to use getProperties here instead?
-//     for (const key in arrayProperties) {
-//       if (arrayProperties[key].type === 'object') {
-//         Object.entries(arrayProperties[key].properties).forEach(([subKey, value]) => {
-//           formatted.push({[`${key}.${subKey}`]: value})
-//         })
-//       } else {
-//         formatted.push({[key]: arrayProperties[key]})
-//       }
+//     return { type, schema: { type: items.type, schema: formatProperties(items.properties) }}
+//   } else if (type === 'object') {
+//     return { type, schema: formatProperties(properties)}
+//   } else {
+//     // else must be primitive type
+//     return {
+//       type: type || options && 'enum',
+//       ...(options && { options: options.map(value => ({ value })) })
 //     }
-//
-//     return { type, items: formatted }
-//   }
-//
-//   if (type === 'object') {
-//     //TODO
-//   }
-//
-//
-//   return {
-//     type: type || options && 'enum',
-//     ...(options && { options: options.map(value => ({ value })) })
 //   }
 //
 // }
-//
-// const result = getQuoteFields(quote)
