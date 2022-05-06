@@ -233,56 +233,65 @@ export function parseInputData(input) {
 }
 
 // TODO - Reworking parseInput data - still need to fix 'path' property
-// // create a new object (or nested object) when we encounter a 'properties' key
-// function formatProperties(properties, parentPath) {
-//   const sections = {}
-//   for (const [key, property] of Object.entries(properties)) {
-//     const { path, ...rest } = formatProperty([key, property])
-//     sections[key] = {
-//       ...(path && { path: `${parentPath}.properties.${key}.${path}`}),
-//       ...rest
-//     }
+// function getComponent(properties) {
+//   if (properties.question) {
+//     return '$RADIO'
 //   }
-//   return sections;
-// }
 //
-// // TODO think of a better name; this func processes an object to determine what the next processing step should be
-// function formatProperty([key, property]) {
-//   // 'schema' indicates end of quote path (which means a UI input).
-//   if (property.schema) {
-//     return {
-//       title: property.displayText || property.question || property.name || key,
-//       path: `value`,
-//       type: property.type,
-//       ...formatSchema(property.schema)
-//     }
-//   } else if (property.properties) {
-//     // create a new subproperty object
-//     const { path, ...rest} = formatProperties(property.properties, key);
-//     return {
-//       path: `properties.${path}`,
-//       ...rest
-//     }
-//   }  else {
-//     // else process as a leaf node not associated with a path
-//     return { path : null, ...property }
+//   if (properties.schema?.enum || properties.schema?.oneOf) {
+//     return '$SELECT'
+//   }
+//
+//   if (properties?.type === 'number' || 'string') {
+//     return '$INPUT'
+//   }
+//
+//   if (properties.type === 'boolean') {
+//     return '$SWITCH'
 //   }
 // }
 //
-// // process 'schema' object
-// function formatSchema(schema) {
-//   const { type, enum: options, items, properties } = schema
+// function formatProperties(properties, path) {
+//   const formatted = {};
+//   Object.keys(properties).forEach(key => {
 //
-//   if (type === 'array') {
-//     return { type, schema: { type: items.type, schema: formatProperties(items.properties) }}
-//   } else if (type === 'object') {
-//     return { type, schema: formatProperties(properties)}
-//   } else {
-//     // else must be primitive type
-//     return {
-//       type: type || options && 'enum',
-//       ...(options && { options: options.map(value => ({ value })) })
+//     const options = properties[key].schema?.enum || properties[key].schema?.oneOf && properties[key].schema?.oneOf.map(opt => ({ label: opt.title, value: opt.const }));
+//
+//
+//     const component = getComponent(properties[key]);
+//
+//     formatted[key] = {
+//       path: `${path}.${key}.value`,
+//       displayText: properties[key].displayText || properties[key].question || key,
+//       component,
+//       ...(options && { options }),
+//       ...(properties[key].value && { value: properties[key].value }),
+//       ...(properties[key].schema?.defaultValue && { defaultValue: properties[key].schema.default }),
+//       ...(properties[key].type && { type: properties[key].type }),
+//       ...(properties[key].required && { required: properties[key].required }),
+//       ...(properties[key].order && { order: properties[key].order })
 //     }
-//   }
+//   })
 //
+//   return formatted
+// }
+//
+// const { coverageLimits, coverageOptions, policyHolderMailingAddress, mortgagees, underwritingAnswers } = categories.quote.properties;
+//
+// const formattedQuote = {
+//   coverageLimits: formatProperties(coverageLimits.properties, 'quote.properties.coverageLimits.properties.'),
+//   coverageOptions: formatProperties(coverageOptions.properties, 'quote.properties.coverageOptions.properties'),
+//   policyHolderMailingAddress: {
+//     ...formatProperties(policyHolderMailingAddress.schema.properties, 'quote.properties.policyHolderMailingAddress.schema.properties.'),
+//     country: formatProperties(policyHolderMailingAddress.schema.properties.country.properties, 'quote.properties.policyHolderMailingAddress.schema.properties.country.properties')
+//   },
+//   mortgagees: {
+//     ...formatProperties(mortgagees.schema.items.properties, 'quote.properties.mortgagees.schema.items.properties'),
+//     mailingAddress: {
+//       ...formatProperties(mortgagees.schema.items.properties.mailingAddress.properties, 'quote.properties.mortgagees.schema.items.properties.mailingAddress.properties'),
+//       country: formatProperties(mortgagees.schema.items.properties.mailingAddress.properties.country.properties, 'quote.properties.mortgagees.schema.items.properties.mailingAddress.properties.country')
+//     }
+//   },
+//   underwritingAnswers:
+//     formatProperties(underwritingAnswers.properties, 'quote.properties.underwritingAnswers.properties')
 // }
