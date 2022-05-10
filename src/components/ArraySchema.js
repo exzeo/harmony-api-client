@@ -16,7 +16,7 @@ const styles = {
   },
 };
 
-const ArraySchema = ({ inputList, path, title }) => {
+const ArraySchema = ({ inputList, path: sectionPath, title }) => {
   const addFields = () => {
     let fields = {};
     inputList.forEach((input) => _.set(fields, input.name, ''));
@@ -26,14 +26,14 @@ const ArraySchema = ({ inputList, path, title }) => {
 
   return (
     <div style={styles.flexCenter}>
-      <FieldArray name={path}>
+      <FieldArray name={sectionPath}>
         {({ fields }) => {
           return (
             <div style={{ display: 'flex' }}>
               <div>
-                {fields.map((name, index) => {
+                {fields.map((fieldPath, index) => {
                   return (
-                    <Fragment key={name}>
+                    <Fragment key={fieldPath}>
                       <div>
                         {index > 0 && (
                           <hr
@@ -48,12 +48,12 @@ const ArraySchema = ({ inputList, path, title }) => {
                         )}
                         {inputList.map((input) => {
                           return (
-                            <div key={input.name} style={{ display: 'flex' }}>
+                            <div key={input.path} style={{ display: 'flex' }}>
                               <label style={styles.labelWidth}>
-                                {input.title || input.name}
+                                {input.title}
                               </label>
                               <Field
-                                name={`${name}.${input.name}`}
+                                name={fieldPath + input.path}
                                 component="input"
                                 type={
                                   input.type === 'string' ? 'text' : 'number'

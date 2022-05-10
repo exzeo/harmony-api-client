@@ -315,9 +315,10 @@ function formatQuoteProperties(properties, path) {
       nested.forEach((v) => formatted.push(v));
     } else {
       formatted.push({
-        path: path.includes('value')
-          ? `${path}.${key}`
-          : `${path}.${key}.value`,
+        // path: path && (path.includes('value')
+        //   ? `${path}.${key}`
+        //   : `${path}.${key}.value`),
+        path: `${path}.${key}`,
         title: properties[key].displayText || properties[key].question || key,
         component,
         ...(options && { options }),
@@ -343,26 +344,27 @@ function formatQuoteSections([sectionName, section]) {
       path: `categories.quote.properties.${sectionName}.value`,
       inputs: formatQuoteProperties(
         section.schema.items.properties,
-        `categories.quote.properties.${sectionName}.value`
+        // No 'path' provided b/c the path is defined top-level for an array section
+        ''
       ),
     };
   } else if (section.schema?.type === 'object') {
     return {
       key: sectionName,
-      type: 'object', // group inputs with the same base path
+      type: 'object',
       inputs: formatQuoteProperties(
         section.schema.properties,
         `categories.quote.properties.${sectionName}.value`
       ),
     };
   } else {
-    // individual inputs
+    // else format each input and add 'value' to the end of each input's path
     return {
       key: sectionName,
       inputs: formatQuoteProperties(
         section.properties,
         `categories.quote.properties.${sectionName}.properties`
-      ),
+      ).map((v) => ({ ...v, path: v.path + '.value' })),
     };
   }
 }
