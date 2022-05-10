@@ -2,6 +2,8 @@ import { Field } from 'react-final-form';
 
 import InputSelect from './components/Select';
 
+const HIDDEN_FIELDS = ['order'];
+
 function formatHeading(str) {
   let capitalized = str.charAt(0).toUpperCase() + str.slice(1);
   return capitalized.replace(/([0-9A-Z])/g, ' $&'); // Add space between camel casing
@@ -89,6 +91,9 @@ function formatQuoteProperties(properties, path) {
   const formatted = [];
 
   Object.keys(properties).forEach((key) => {
+    if (HIDDEN_FIELDS.includes(key)) {
+      return;
+    }
     const options =
       (properties[key].schema?.enum &&
         properties[key].schema.enum.map((opt) => ({
@@ -114,12 +119,12 @@ function formatQuoteProperties(properties, path) {
         path: `${path}.${key}`,
         title: properties[key].displayText || properties[key].question || key,
         component,
+        type: properties[key].type || properties[key].schema?.type,
         ...(options && { options }),
         ...(properties[key].value && { value: properties[key].value }),
         ...(properties[key].schema?.default && {
           defaultValue: properties[key].schema.default,
         }),
-        ...(properties[key].type && { type: properties[key].type }),
         ...(properties[key].required && { required: properties[key].required }),
         ...(properties[key].order && { order: properties[key].order }),
       });

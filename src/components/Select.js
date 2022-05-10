@@ -90,7 +90,7 @@ const InputSelect = ({ title, path, options, type }) => {
                 <option value={''}></option>
                 {options.map((option) => (
                   <option key={`${path}.${option.value}`} value={option.value}>
-                    {option.label}
+                    {String(option.label)}
                   </option>
                 ))}
               </select>
