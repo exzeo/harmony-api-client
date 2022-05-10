@@ -340,6 +340,7 @@ function formatQuoteSections([sectionName, section]) {
     return {
       key: sectionName,
       type: 'array', // array of objects
+      path: `categories.quote.properties.${sectionName}.value`,
       inputs: formatQuoteProperties(
         section.schema.items.properties,
         `categories.quote.properties.${sectionName}.value`

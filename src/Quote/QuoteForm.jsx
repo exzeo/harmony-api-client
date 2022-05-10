@@ -17,7 +17,7 @@ const QuoteForm = ({ submitQuote, input, quote, sendApplication }) => {
       ),
     [input]
   );
-  console.log(input.categories.quote);
+  console.log(input.categories.billing);
   console.log(sections);
 
   return (
@@ -43,7 +43,15 @@ const QuoteForm = ({ submitQuote, input, quote, sendApplication }) => {
               return (
                 <section aria-labelledby="section-key">
                   <h2 id="section-key">{formatHeading(section.key)}</h2>
-                  {section.inputs.map((input) => renderInput(input))}
+                  {section.type === 'array' ? (
+                    <ArraySchema
+                      inputList={section.inputs}
+                      title={formatHeading(section.key)}
+                      path={section.path}
+                    />
+                  ) : (
+                    section.inputs.map((input) => renderInput(input))
+                  )}
                 </section>
               );
             })}
