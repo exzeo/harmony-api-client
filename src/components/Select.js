@@ -19,7 +19,7 @@ const styles = {
   },
 };
 
-const InputSelect = ({ title, path, options, type, defaultValue, values }) => {
+const InputSelect = ({ title, path, options, type }) => {
   if (path.includes('underwritingAnswers')) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -38,7 +38,7 @@ const InputSelect = ({ title, path, options, type, defaultValue, values }) => {
                 <div style={{ width: '600px' }}>
                   {options.map((option) => {
                     return (
-                      <div key={option.value}>
+                      <div key={`${path}.${option.value}`}>
                         <div
                           onClick={() => input.onChange(option.value)}
                           style={{
@@ -89,7 +89,7 @@ const InputSelect = ({ title, path, options, type, defaultValue, values }) => {
               <select {...input}>
                 <option value={''}></option>
                 {options.map((option) => (
-                  <option key={option.value} value={option.value}>
+                  <option key={`${path}.${option.value}`} value={option.value}>
                     {option.label}
                   </option>
                 ))}
